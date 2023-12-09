@@ -19,11 +19,6 @@ public:
 	AAuraCharacter();
 	
 protected:
-
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	class UCameraComponent* CameraComponent;
-
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	class USpringArmComponent* SpringArmComponent;	
+	
 	
 };

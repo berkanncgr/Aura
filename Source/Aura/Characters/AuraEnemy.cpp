@@ -2,14 +2,24 @@
 
 
 #include "AuraEnemy.h"
-#include "Kismet/KismetSystemLibrary.h"
+
+AAuraEnemy::AAuraEnemy()
+{
+	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility,ECR_Block);
+}
 
 void AAuraEnemy::HighlightActor()
 {
-	UKismetSystemLibrary::PrintString(GetWorld(),FString::Printf(TEXT("H: %s"),*GetName()));
+	GetMesh()->SetCustomDepthStencilValue(250);
+	GetMesh()->SetRenderCustomDepth(true);
+	Weapon->SetCustomDepthStencilValue(250);
+	Weapon->SetRenderCustomDepth(true);
 }
 
 void AAuraEnemy::UnHiglightActor()
 {
-	UKismetSystemLibrary::PrintString(GetWorld(),FString::Printf(TEXT("UH: %s"),*GetName()));
+	GetMesh()->SetCustomDepthStencilValue(0);
+	GetMesh()->SetRenderCustomDepth(false);
+	Weapon->SetCustomDepthStencilValue(0);
+	Weapon->SetRenderCustomDepth(false);
 }
