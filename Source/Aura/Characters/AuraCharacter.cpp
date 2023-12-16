@@ -3,7 +3,9 @@
 #include "AuraCharacter.h"
 
 #include "AbilitySystemComponent.h"
+#include "Aura/Player/AuraPlayerController.h"
 #include "Aura/Player/AuraPlayerState.h"
+#include "Aura/UI/HUD/AuraHUD.h"
 
 
 AAuraCharacter::AAuraCharacter()
@@ -34,6 +36,13 @@ void AAuraCharacter::InitAbilityActorInfo()
 	PS->GetAbilitySystemComponent()->InitAbilityActorInfo(PS,this);
 	AbilitySystemComponent = PS->GetAbilitySystemComponent();
 	AttributeSet = PS->GetAttributeSet();
+
+	AAuraPlayerController* Pc = Cast<AAuraPlayerController>(GetController());
+	if(!Pc) return; // We Call InitAbilityActorInfo in OnRep. This cast is always null on OTHER CLIENTS !!!! Only valid if Character is Locally Controlled.
+
+	AAuraHUD* Hud = Cast<AAuraHUD>(Pc->GetHUD());
+	if(!Hud) return;
+	Hud->InitOverlay(Pc,PS,AbilitySystemComponent,AttributeSet);
 }
 
 

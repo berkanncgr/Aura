@@ -28,6 +28,7 @@ void AAuraPlayerController::BeginPlay()
 	
 	//@todo: try if there is no authority!!!!
 	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
+	if(!Subsystem) return; // This cast is always null on OTHER CLIENTS !!!! Only valid if Character is Locally Controlled.
 	Subsystem->AddMappingContext(AuraContext,0);
 }
 
