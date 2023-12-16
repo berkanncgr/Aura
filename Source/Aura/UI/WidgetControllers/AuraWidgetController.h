@@ -38,7 +38,9 @@ struct FWidgetControllerParams
 	}
 };
 
-UCLASS()
+/**This is the BASE CLASS for WidgetController!! */
+UCLASS(BlueprintType,Blueprintable)
+
 class AURA_API UAuraWidgetController : public UObject
 {
 	GENERATED_BODY()
@@ -53,6 +55,9 @@ public:
 		AbilitySystemComponent = Params.AbilitySystemComponent;
 		AttributeSet = Params.AttributeSet;
 	}
+
+	virtual void BroadcastInitialValues() {};
+	virtual void BindCallbacksToDependencies() {}
 
 protected:
 

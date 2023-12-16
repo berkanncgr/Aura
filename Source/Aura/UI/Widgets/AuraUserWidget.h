@@ -26,7 +26,5 @@ protected:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void WdigetControllerSet();
-
-
 	
 };

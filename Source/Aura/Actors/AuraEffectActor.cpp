@@ -45,7 +45,8 @@ void AAuraEffectActor::SphereBeginOverlap(UPrimitiveComponent* OverlappedCompone
 	if(!AAS) return;
 	
 	UAuraAttributeSet* AuraAttributeSet = const_cast<UAuraAttributeSet*>(AAS);
-	AuraAttributeSet->SetMana(AAS->GetMana() + 5);
+	AuraAttributeSet->SetMana(AAS->GetMana() + 25);
+	AuraAttributeSet->SetHealth(AAS->GetHealth() -20);
 	Destroy();
 }
 
