@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "AttributeSet.h"
 #include "AbilitySystemComponent.h"
+//#include "GameplayEffectExtension.h"
 #include "AuraAttributeSet.generated.h"
 
 
@@ -12,6 +13,47 @@
 	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
+USTRUCT(BlueprintType)
+struct FEffectProperties
+{
+	GENERATED_BODY()
+	
+	FGameplayEffectContextHandle EffectContextHandle;
+
+	UPROPERTY()
+	AActor* SourceAvatarActor = nullptr;
+
+	UPROPERTY()
+	UAbilitySystemComponent* SourceASC = nullptr;
+
+	UPROPERTY()
+	ACharacter* SourceCharacter = nullptr;
+
+	UPROPERTY()
+	APlayerController* SourcePC = nullptr;
+
+	UPROPERTY()
+	AActor* TargetAvatarActor = nullptr;
+
+	UPROPERTY()
+	UAbilitySystemComponent* TargetASC = nullptr;
+
+	UPROPERTY()
+	ACharacter* TargetCharacter = nullptr;
+
+	UPROPERTY()
+	APlayerController* TargetPC = nullptr;
+
+	FEffectProperties(){};
+
+	FEffectProperties(AActor* InSourceActor, UAbilitySystemComponent* InSourceAsc, ACharacter* InSourceCharacter, APlayerController* InSourcePC, AActor* InTargetActor, UAbilitySystemComponent* InTargetAsc, ACharacter* InTargetCharacter, APlayerController* InTargetPC)
+	{
+		SourceAvatarActor = InSourceActor; SourceASC = InSourceAsc; SourceCharacter = InSourceCharacter; SourcePC = InSourcePC;
+		TargetAvatarActor = InTargetActor; TargetASC = InTargetAsc; TargetCharacter = InTargetCharacter; TargetPC = InTargetPC;
+	}
+	
+};
+
 UCLASS()
 class AURA_API UAuraAttributeSet : public UAttributeSet
 {
@@ -20,6 +62,7 @@ class AURA_API UAuraAttributeSet : public UAttributeSet
 public:
 
 	UAuraAttributeSet();
+	
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,ReplicatedUsing=OnRep_Health)
 	FGameplayAttributeData Health;
@@ -51,6 +94,13 @@ protected:
 	UFUNCTION()
 	void OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana);
 
+	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
+	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+private:
+
+	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props);
+	
 	
 };

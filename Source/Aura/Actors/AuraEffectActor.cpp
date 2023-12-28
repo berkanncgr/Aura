@@ -23,6 +23,8 @@ void AAuraEffectActor::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 	Sphere->OnComponentBeginOverlap.AddDynamic(this,&ThisClass::SphereBeginOverlap);
+	Sphere->OnComponentEndOverlap.AddDynamic(this,&AAuraEffectActor::SphereEndOverlap);
+
 }
 
 void AAuraEffectActor::SphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -45,20 +47,64 @@ void AAuraEffectActor::SphereBeginOverlap(UPrimitiveComponent* OverlappedCompone
 	Destroy();
 	*/
 
-	ApplyEffectToTarget(OtherActor,InstantGameplayEffectClass);
-	Destroy();
+	if(EffectApplicationPolicy == EEffectApplicationPolicy::OnOverlap)
+	ApplyEffectToTarget(OtherActor,GameplayEffectClass);
 }
+
 
 void AAuraEffectActor::ApplyEffectToTarget(AActor* Target, TSubclassOf<UGameplayEffect> EffectToApply)
 {
 	UAbilitySystemComponent* TargetAsc = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(Target);
-	if(!TargetAsc) return;
-	check(EffectToApply);
+	if(!TargetAsc) return; check(EffectToApply);
 
 	FGameplayEffectContextHandle EffectContextHandle = TargetAsc->MakeEffectContext();
 	EffectContextHandle.AddSourceObject(this); //What object caused this effect.
 	
-	const FGameplayEffectSpecHandle EffectSpecHandle = TargetAsc->MakeOutgoingSpec(EffectToApply,1.f,EffectContextHandle);
+	const FGameplayEffectSpecHandle EffectSpecHandle = TargetAsc->MakeOutgoingSpec(EffectToApply,EffectLevel,EffectContextHandle);
 	// We use this function because ???
-	TargetAsc->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
+	FActiveGameplayEffectHandle ActiveGameplayEffect = TargetAsc->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
+
+	// Def is GameplayEffect SELF.
+	const EGameplayEffectDurationType Policy = EffectSpecHandle.Data.Get()->Def->DurationPolicy;
+	const bool bIsInfinite = Policy == EGameplayEffectDurationType::Infinite;
+
+	if(bIsInfinite && EffectRemovalPolicy == EEffectRemovalPolicy::OnEndOverlap)
+		ActiveEffectHandlesMap.Add(ActiveGameplayEffect, TargetAsc);
+
+	if(bShouldDestroyAfterApplyingEffect) Destroy();
+}
+
+
+void AAuraEffectActor::SphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex)
+{	
+	if(EffectApplicationPolicy == EEffectApplicationPolicy::OnEndOverlap)
+		ApplyEffectToTarget(OtherActor,GameplayEffectClass);
+	
+
+	if(EffectRemovalPolicy == EEffectRemovalPolicy::OnEndOverlap)
+		RemoveEffectFromTarget(OtherActor);
+}
+
+
+void AAuraEffectActor::RemoveEffectFromTarget(AActor* Target)
+{
+	UAbilitySystemComponent* TargetAsc = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(Target);
+	if(!TargetAsc) return;
+	
+	TArray<FActiveGameplayEffectHandle> HandlesToRemove;
+	for(auto HandlePair : ActiveEffectHandlesMap)
+	{
+		if(HandlePair.Value == TargetAsc)
+		{
+			HandlesToRemove.Add(HandlePair.Key);
+			TargetAsc->RemoveActiveGameplayEffect(HandlePair.Key,1);
+		}
+	}
+
+	for(FActiveGameplayEffectHandle& Handle : HandlesToRemove)
+	{
+		ActiveEffectHandlesMap.FindAndRemoveChecked(Handle);
+	}
+
+	if(bShouldDestroyAfterRemovingEffect) Destroy();
 }
