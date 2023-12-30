@@ -1,9 +1,6 @@
 
-
-
 #include "AuraAbilitySystemComponent.h"
 
-#include "Kismet/KismetSystemLibrary.h"
 
 void UAuraAbilitySystemComponent::AbilityActorInfoSet()
 {
@@ -18,11 +15,4 @@ void UAuraAbilitySystemComponent::EffectApplied(UAbilitySystemComponent* Ability
 	FGameplayTagContainer TagContainer;
 	EffectSpec.GetAllAssetTags(TagContainer);
 	EffectAssetTags.Broadcast(TagContainer);
-
-	for(const FGameplayTag& Tag : TagContainer)
-	{
-		//@todo: Broadcast the Tag to the WidgetController.
-		FString M = FString::Printf(TEXT(" Tag: %s"),*Tag.ToString());
-		UKismetSystemLibrary::PrintString(GetWorld(),M,1,1,FColor::Red,3);
-	}
 }

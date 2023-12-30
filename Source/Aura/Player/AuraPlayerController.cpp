@@ -84,7 +84,4 @@ void AAuraPlayerController::Move(const FInputActionValue& InputValue)
 	if(!ControlledPawn) return;
 	ControlledPawn->AddMovementInput(ForwardDirection,Value.Y);
 	ControlledPawn->AddMovementInput(RightDirection,Value.X);
-	
-	FString T = FString::Printf(TEXT("MOVEACTION X:%f - Y:%f"),Value.X,Value.Y);
-	UKismetSystemLibrary::PrintString(GetWorld(),T,1,0,FColor::Green,GetWorld()->GetDeltaSeconds());
 }	

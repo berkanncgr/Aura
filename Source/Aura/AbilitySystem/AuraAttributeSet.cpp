@@ -44,17 +44,9 @@ void UAuraAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, 
 {
 	Super::PreAttributeChange(Attribute, NewValue);
 
-	if(Attribute == GetHealthAttribute())
-	{
-		NewValue = FMath::Clamp(NewValue,0.f,GetMaxHealth());
-		return;
-	}
+	if(Attribute == GetHealthAttribute()) NewValue = FMath::Clamp(NewValue,0.f,GetMaxHealth());
+	else if(Attribute == GetManaAttribute()) NewValue = FMath::Clamp(NewValue,0.f,GetMaxMana());
 
-	if(Attribute == GetManaAttribute())
-	{
-		NewValue = FMath::Clamp(NewValue,0.f,GetMaxMana());
-		return;
-	}
 }
 
 void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
@@ -64,10 +56,10 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	FEffectProperties EffectProperties;
 	SetEffectProperties(Data,EffectProperties);
 
+	const auto Attribute = Data.EvaluatedData.Attribute;
 	
-
-
-	
+	if(Attribute == GetHealthAttribute()) SetHealth(FMath::Clamp(GetHealth(),0,GetMaxHealth()));
+	else if(Attribute == GetManaAttribute()) SetMana(FMath::Clamp(GetMana(),0,GetMaxMana()));
 }
 
 void UAuraAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props)

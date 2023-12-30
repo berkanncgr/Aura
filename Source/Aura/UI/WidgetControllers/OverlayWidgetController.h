@@ -7,14 +7,6 @@
 #include "GameplayEffectTypes.h"
 #include "OverlayWidgetController.generated.h"
 
-
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealthChanged,float, NewHealth);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxHealthChanged,float, NewMaxHealth);
-
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnManaChanged,float, NewMana);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxManaChanged,float, NewMaxMana);
-
-
 USTRUCT(BlueprintType)
 struct FUIWidgetRow : public FTableRowBase
 {
@@ -34,6 +26,7 @@ struct FUIWidgetRow : public FTableRowBase
 };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMessageWidgetRowSignature, FUIWidgetRow, Row);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangedSignature,float, NewValue);
 
 
 /**This is the one we use for AURA CHARACTER WidgetController!! */
@@ -45,21 +38,19 @@ class AURA_API UOverlayWidgetController : public UAuraWidgetController
 public:
 
 	virtual void BroadcastInitialValues() override;
-
-
 	virtual void BindCallbacksToDependencies() override;
 
 	UPROPERTY(BlueprintAssignable)
-	FOnHealthChanged OnHealthChanged;
+	FOnAttributeChangedSignature OnHealthChanged;
 	
 	UPROPERTY(BlueprintAssignable)
-	FOnMaxHealthChanged OnMaxHealthChanged;
+	FOnAttributeChangedSignature OnMaxHealthChanged;
 
 	UPROPERTY(BlueprintAssignable)
-	FOnManaChanged OnManaChanged;
+	FOnAttributeChangedSignature OnManaChanged;
 	
 	UPROPERTY(BlueprintAssignable)
-	FOnMaxManaChanged OnMaxManaChanged;
+	FOnAttributeChangedSignature OnMaxManaChanged;
 
 	UPROPERTY(BlueprintAssignable)
 	FMessageWidgetRowSignature MessageWidgetRowDelegate;
@@ -69,19 +60,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite)
 	TObjectPtr<UDataTable> MessageWidgetDataTable;
 	
-	void HealthChanged(const FOnAttributeChangeData& Data) const;
-	void MaxHealthChanged(const FOnAttributeChangeData& Data) const;
-	void ManaChanged(const FOnAttributeChangeData& Data);
-	void MaxManaChanged(const FOnAttributeChangeData& Data);
-
 	template<typename T>
 	T* GetDataTableRowByTag(UDataTable* DataTable,const FGameplayTag& Tag)
 	{
 		T* Row = DataTable->FindRow<T>(Tag.GetTagName(),TEXT(""));
 		return Row;
 	}
-
-	
-	
-	
 };
