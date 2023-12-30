@@ -3,9 +3,11 @@
 #include "AuraCharacter.h"
 
 #include "AbilitySystemComponent.h"
+#include "Aura/AbilitySystem/AuraAbilitySystemComponent.h"
 #include "Aura/Player/AuraPlayerController.h"
 #include "Aura/Player/AuraPlayerState.h"
 #include "Aura/UI/HUD/AuraHUD.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 
 AAuraCharacter::AAuraCharacter()
@@ -35,6 +37,9 @@ void AAuraCharacter::InitAbilityActorInfo()
 	check(PS);
 	PS->GetAbilitySystemComponent()->InitAbilityActorInfo(PS,this);
 	AbilitySystemComponent = PS->GetAbilitySystemComponent();
+	UAuraAbilitySystemComponent* AAS = Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent);
+	if(AAS) AAS->AbilityActorInfoSet();
+	else { UKismetSystemLibrary::PrintString(GetWorld(),TEXT("Ability Cast NULL"));}
 	AttributeSet = PS->GetAttributeSet();
 
 	AAuraPlayerController* Pc = Cast<AAuraPlayerController>(GetController());

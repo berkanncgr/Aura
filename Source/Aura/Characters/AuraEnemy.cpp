@@ -4,12 +4,14 @@
 #include "AuraEnemy.h"
 
 #include "AbilitySystemComponent.h"
+#include "Aura/AbilitySystem/AuraAbilitySystemComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 AAuraEnemy::AAuraEnemy()
 {
 	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility,ECR_Block);
 
-	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>("AbilitySystemComponent");
+	AbilitySystemComponent = CreateDefaultSubobject<UAuraAbilitySystemComponent>("AbilitySystemComponent");
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
 	
@@ -19,7 +21,7 @@ AAuraEnemy::AAuraEnemy()
 void AAuraEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-	AbilitySystemComponent->InitAbilityActorInfo(this,this);
+	InitAbilityActorInfo();
 }
 
 void AAuraEnemy::HighlightActor()
@@ -36,4 +38,12 @@ void AAuraEnemy::UnHiglightActor()
 	GetMesh()->SetRenderCustomDepth(false);
 	Weapon->SetCustomDepthStencilValue(0);
 	Weapon->SetRenderCustomDepth(false);
+}
+
+void AAuraEnemy::InitAbilityActorInfo()
+{
+	AbilitySystemComponent->InitAbilityActorInfo(this,this);
+	UAuraAbilitySystemComponent* AAS = Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent);
+	if(AAS) AAS->AbilityActorInfoSet();
+	else { UKismetSystemLibrary::PrintString(GetWorld(),TEXT("Ability Cast NULL Enemy"));}
 }

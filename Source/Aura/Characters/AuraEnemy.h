@@ -22,5 +22,9 @@ public:
 	
 	virtual void HighlightActor() override;
 	virtual void UnHiglightActor() override;
+
+protected:
+
+	virtual void InitAbilityActorInfo() override;
 	
 };
