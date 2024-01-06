@@ -29,6 +29,7 @@ void AAuraCharacter::OnRep_PlayerState()
 
 	// Init Ability Actor Info for CLIENT:
 	InitAbilityActorInfo();
+	InitializePrimaryAttributes();
 }
 
 void AAuraCharacter::InitAbilityActorInfo()

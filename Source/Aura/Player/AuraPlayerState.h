@@ -31,8 +31,7 @@ protected:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	TObjectPtr< UAbilitySystemComponent> AbilitySystemComponent;
 
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-
+	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
 	
 };

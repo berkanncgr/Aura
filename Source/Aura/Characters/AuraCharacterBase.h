@@ -6,18 +6,19 @@
 #include "Aura/Interfaces/CharacterInterface.h"
 #include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
-#include "AuraBaseCharacter.generated.h"
+#include "AuraCharacterBase.generated.h"
 
+class UGameplayEffect;
 class UAttributeSet;
 
 UCLASS(Abstract)
-class AURA_API AAuraBaseCharacter : public ACharacter, public ICharacterInterface,public IAbilitySystemInterface
+class AURA_API AAuraCharacterBase : public ACharacter, public ICharacterInterface,public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
 public:
 
-	AAuraBaseCharacter();
+	AAuraCharacterBase();
 
 	virtual AActor* GetSelfAsActor() override;
 	
@@ -34,6 +35,7 @@ protected:
 	
 	virtual void BeginPlay() override;
 	virtual void InitAbilityActorInfo(){};
+	void InitializePrimaryAttributes() const;
 
 	UPROPERTY(EditAnywhere,Category=Combat)
 	TObjectPtr<USkeletalMeshComponent> Weapon;
@@ -43,5 +45,8 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
+
+	UPROPERTY(EditAnywhere,BlueprintReadOnly)
+	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributes;
 	
 };
