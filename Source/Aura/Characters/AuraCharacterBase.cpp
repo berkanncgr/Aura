@@ -1,10 +1,10 @@
 
 
 
-#include "AuraBaseCharacter.h"
+#include "AuraCharacterBase.h"
 
 
-AAuraBaseCharacter::AAuraBaseCharacter()
+AAuraCharacterBase::AAuraCharacterBase()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = false;
@@ -16,13 +16,13 @@ AAuraBaseCharacter::AAuraBaseCharacter()
 
 }
 
-AActor* AAuraBaseCharacter::GetSelfAsActor()
+AActor* AAuraCharacterBase::GetSelfAsActor()
 {
 	return this;
 }
 
 
-void AAuraBaseCharacter::BeginPlay()
+void AAuraCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
