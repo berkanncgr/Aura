@@ -23,8 +23,18 @@ public:
 	virtual void HighlightActor() override;
 	virtual void UnHiglightActor() override;
 
+	FORCEINLINE virtual int32 GetPlayerLevel() override { return Level; }
+
+
 protected:
 
 	virtual void InitAbilityActorInfo() override;
+
+	UPROPERTY(EditAnywhere,BlueprintReadOnly)
+	int32 Level = 1;
+
+
+	
+
 	
 };

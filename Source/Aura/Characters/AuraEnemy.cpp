@@ -47,3 +47,6 @@ void AAuraEnemy::InitAbilityActorInfo()
 	if(AAS) AAS->AbilityActorInfoSet();
 	else { UKismetSystemLibrary::PrintString(GetWorld(),TEXT("Ability Cast NULL Enemy"));}
 }
+
+
+

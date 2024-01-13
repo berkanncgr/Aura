@@ -29,7 +29,12 @@ void AAuraCharacter::OnRep_PlayerState()
 
 	// Init Ability Actor Info for CLIENT:
 	InitAbilityActorInfo();
-	InitializeDefaultAttributes();
+}
+
+int32 AAuraCharacter::GetPlayerLevel()
+{
+	AAuraPlayerState* PS = GetPlayerState<AAuraPlayerState>();
+	return PS->GetPlayerLevel();
 }
 
 void AAuraCharacter::InitAbilityActorInfo()
@@ -42,6 +47,9 @@ void AAuraCharacter::InitAbilityActorInfo()
 	if(AAS) AAS->AbilityActorInfoSet();
 	else { UKismetSystemLibrary::PrintString(GetWorld(),TEXT("Ability Cast NULL"));}
 	AttributeSet = PS->GetAttributeSet();
+	InitializeDefaultAttributes();
+
+
 
 	AAuraPlayerController* Pc = Cast<AAuraPlayerController>(GetController());
 	if(!Pc) return; // We Call InitAbilityActorInfo in OnRep. This cast is always null on OTHER CLIENTS !!!! Only valid if Character is Locally Controlled.
