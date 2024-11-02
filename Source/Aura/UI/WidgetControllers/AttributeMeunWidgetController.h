@@ -6,9 +6,10 @@
 #include "Aura/UI/WidgetControllers/AuraWidgetController.h"
 #include "AttributeMeunWidgetController.generated.h"
 
-/**
- * 
- */
+struct FAuraAttributeInfo;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAttributeInfoSignature, const FAuraAttributeInfo&, Info);
+
 UCLASS(Blueprintable,Blueprintable)
 class AURA_API UAttributeMeunWidgetController : public UAuraWidgetController
 {
@@ -18,5 +19,15 @@ class AURA_API UAttributeMeunWidgetController : public UAuraWidgetController
 public:
 
 	virtual void BindCallbacksToDependencies() override;
+
+	UFUNCTION(BlueprintCallable)
 	virtual void BroadcastInitialValues() override;
+
+	UPROPERTY(BlueprintAssignable)
+	FAttributeInfoSignature AttributeInfoSignature;
+
+protected:
+
+	UPROPERTY(EditAnywhere,BlueprintReadOnly)
+	class UAttributeInfoDataAsset* AttributeInfoDataAsset;
 };

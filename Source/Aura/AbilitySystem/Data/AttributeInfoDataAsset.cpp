@@ -4,7 +4,7 @@
 #include "Aura/AbilitySystem/Data/AttributeInfoDataAsset.h"
 
 
-FAuraAttributeInfo UAttributeInfoDataAsset::FindAttribute(const FGameplayTag& AttributeTag, bool bLogNotFound) const
+FAuraAttributeInfo UAttributeInfoDataAsset::FindAttributeInfoForTag(const FGameplayTag& AttributeTag, bool bLogNotFound) const
 {
 	for (const FAuraAttributeInfo& Info : AttributeInformation)
 	{
