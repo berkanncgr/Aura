@@ -32,7 +32,7 @@ protected:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	TObjectPtr< UAbilitySystemComponent> AbilitySystemComponent;
 
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<UAttributeSet> AttributeSet;
 
 	UPROPERTY(VisibleAnywhere,ReplicatedUsing=OnRep_Level)

@@ -6,12 +6,13 @@
 #include "Net/UnrealNetwork.h"
 #include"GameplayEffectExtension.h"
 #include "GameFramework/Character.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 
 UAuraAttributeSet::UAuraAttributeSet()
 {
 	InitHealth(50);
-	InitMana(50);
+	InitMana(5);
 }
 
 void UAuraAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth)
@@ -26,6 +27,7 @@ void UAuraAttributeSet::OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHeal
 
 void UAuraAttributeSet::OnRep_Mana(const FGameplayAttributeData& OldMana)
 {
+	UKismetSystemLibrary::PrintString(GetWorld(),FString::Printf(TEXT(" %s New Mana: %f"),*GetOwningActor()->GetName(),GetMana()),1,1,FColor::Purple,10);
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UAuraAttributeSet,Mana,OldMana);
 }
 
@@ -155,7 +157,6 @@ void UAuraAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, Vigor, COND_None, REPNOTIFY_Always);
 
 	// Secondary Attributes
-
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, Armor, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, ArmorPenetration, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, BlockChance, COND_None, REPNOTIFY_Always);
@@ -168,7 +169,6 @@ void UAuraAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, MaxMana, COND_None, REPNOTIFY_Always);
 	
 	// Vital Attributes
-	
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, Health, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, Mana, COND_None, REPNOTIFY_Always);
 }

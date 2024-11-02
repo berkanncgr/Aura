@@ -68,8 +68,7 @@ void AAuraEffectActor::ApplyEffectToTarget(AActor* Target, TSubclassOf<UGameplay
 	const EGameplayEffectDurationType Policy = EffectSpecHandle.Data.Get()->Def->DurationPolicy;
 	const bool bIsInfinite = Policy == EGameplayEffectDurationType::Infinite;
 
-	if(bIsInfinite && EffectRemovalPolicy == EEffectRemovalPolicy::OnEndOverlap)
-		ActiveEffectHandlesMap.Add(ActiveGameplayEffect, TargetAsc);
+	if(bIsInfinite && EffectRemovalPolicy == EEffectRemovalPolicy::OnEndOverlap) ActiveEffectHandlesMap.Add(ActiveGameplayEffect, TargetAsc);
 
 	if(bShouldDestroyAfterApplyingEffect) Destroy();
 }
