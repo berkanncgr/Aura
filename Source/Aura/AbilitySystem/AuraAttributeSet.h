@@ -6,11 +6,15 @@
 #include "AuraAttributeSet.generated.h"
 
 
+
 #define ATTRIBUTE_ACCESSORS(ClassName, PropertyName) \
 	GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
+
+// We bound static so we can execute the function anytime we want. Then we can capture the return value. We don't need to broadcast.
+DECLARE_DELEGATE_RetVal(FGameplayAttribute,FAttributeSignature)
 
 USTRUCT(BlueprintType)
 struct FEffectProperties
@@ -61,6 +65,8 @@ class AURA_API UAuraAttributeSet : public UAttributeSet
 public:
 
 	UAuraAttributeSet();
+	
+	TMap<FGameplayTag, FAttributeSignature> TagsToAttributesMap;
 	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,ReplicatedUsing=OnRep_Health)
 	FGameplayAttributeData Health;

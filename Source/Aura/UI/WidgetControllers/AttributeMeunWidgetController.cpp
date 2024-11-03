@@ -17,20 +17,12 @@ void UAttributeMeunWidgetController::BroadcastInitialValues()
 	if(!AttributeInfoDataAsset) return;
 	
 	UAuraAttributeSet* AS = CastChecked<UAuraAttributeSet>(AttributeSet);
-
-	FAuraAttributeInfo VigorInfo =  AttributeInfoDataAsset->FindAttributeInfoForTag(FAuraGameplayTags::Get().Attributes_Primary_Vigor);
-	VigorInfo.AttributeValue = AS->GetVigor();
-	AttributeInfoSignature.Broadcast(VigorInfo);
-
-	FAuraAttributeInfo StrInfo =  AttributeInfoDataAsset->FindAttributeInfoForTag(FAuraGameplayTags::Get().Attributes_Primary_Strength);
-	StrInfo.AttributeValue = AS->GetStrength();
-	AttributeInfoSignature.Broadcast(StrInfo);
-
-	FAuraAttributeInfo IntelligenceInfo =  AttributeInfoDataAsset->FindAttributeInfoForTag(FAuraGameplayTags::Get().Attributes_Primary_Intelligence);
-	IntelligenceInfo.AttributeValue = AS->GetIntelligence();
-	AttributeInfoSignature.Broadcast(IntelligenceInfo);
-
-	FAuraAttributeInfo ResilienceInfo =  AttributeInfoDataAsset->FindAttributeInfoForTag(FAuraGameplayTags::Get().Attributes_Primary_Resilience);
-	ResilienceInfo.AttributeValue = AS->GetResilience();
-	AttributeInfoSignature.Broadcast(ResilienceInfo);
+	
+	for(auto& Pair : AS->TagsToAttributesMap)
+	{
+		FAuraAttributeInfo AttributeInfo = AttributeInfoDataAsset->FindAttributeInfoForTag(Pair.Key);
+		FGameplayAttribute Attribute = Pair.Value.Execute();
+		AttributeInfo.AttributeValue = Attribute.GetNumericValue(AS);
+		AttributeInfoSignature.Broadcast(AttributeInfo);
+	}
 }

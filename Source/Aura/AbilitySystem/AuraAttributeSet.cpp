@@ -5,14 +5,70 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "Net/UnrealNetwork.h"
 #include"GameplayEffectExtension.h"
+#include "Aura/AuraGameplayTags.h"
 #include "GameFramework/Character.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 
 UAuraAttributeSet::UAuraAttributeSet()
 {
-	InitHealth(50);
-	InitMana(5);
+	const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
+
+	FAttributeSignature StrengthDelegate;
+	StrengthDelegate.BindStatic(GetStrengthAttribute);
+	TagsToAttributesMap.Add(GameplayTags.Attributes_Primary_Strength, StrengthDelegate);
+
+	FAttributeSignature IntelligenceDelegate;
+	IntelligenceDelegate.BindStatic(GetIntelligenceAttribute);
+	TagsToAttributesMap.Add(GameplayTags.Attributes_Primary_Intelligence, IntelligenceDelegate);
+
+	FAttributeSignature ResilienceDelegate;
+	ResilienceDelegate.BindStatic(GetResilienceAttribute);
+	TagsToAttributesMap.Add(GameplayTags.Attributes_Primary_Resilience, ResilienceDelegate);
+
+	FAttributeSignature VigorDelegate;
+	VigorDelegate.BindStatic(GetVigorAttribute);
+	TagsToAttributesMap.Add(GameplayTags.Attributes_Primary_Vigor, VigorDelegate);
+
+	FAttributeSignature MaxHealthDelegate;
+	MaxHealthDelegate.BindStatic(GetMaxHealthAttribute);
+	TagsToAttributesMap.Add(GameplayTags.Attributes_Secondary_MaxHealth, MaxHealthDelegate);
+
+	FAttributeSignature MaxManaDelegate;
+	MaxManaDelegate.BindStatic(GetMaxManaAttribute);
+	TagsToAttributesMap.Add(GameplayTags.Attributes_Secondary_MaxMana, MaxManaDelegate);
+
+	FAttributeSignature ArmorDelegate;
+	ArmorDelegate.BindStatic(GetArmorAttribute);
+	TagsToAttributesMap.Add(GameplayTags.Attributes_Secondary_Armor, ArmorDelegate);
+
+	FAttributeSignature ArmorPenetrationDelegate;
+	ArmorPenetrationDelegate.BindStatic(GetArmorPenetrationAttribute);
+	TagsToAttributesMap.Add(GameplayTags.Attributes_Secondary_ArmorPenetration, ArmorPenetrationDelegate);
+
+	FAttributeSignature BlockChanceDelegate;
+	BlockChanceDelegate.BindStatic(GetBlockChanceAttribute);
+	TagsToAttributesMap.Add(GameplayTags.Attributes_Secondary_BlockChance, BlockChanceDelegate);
+
+	FAttributeSignature CriticalHitChanceDelegate;
+	CriticalHitChanceDelegate.BindStatic(GetCriticalHitChanceAttribute);
+	TagsToAttributesMap.Add(GameplayTags.Attributes_Secondary_CriticalHitChance, CriticalHitChanceDelegate);
+
+	FAttributeSignature CriticalHitDamageDelegate;
+	CriticalHitDamageDelegate.BindStatic(GetCriticalHitDamageAttribute);
+	TagsToAttributesMap.Add(GameplayTags.Attributes_Secondary_CriticalHitDamage, CriticalHitDamageDelegate);
+
+	FAttributeSignature CriticalHitResistanceDelegate;
+	CriticalHitResistanceDelegate.BindStatic(GetCriticalHitResistanceAttribute);
+	TagsToAttributesMap.Add(GameplayTags.Attributes_Secondary_CriticalHitResistance, CriticalHitResistanceDelegate);
+
+	FAttributeSignature HealthRegenerationDelegate;
+	HealthRegenerationDelegate.BindStatic(GetHealthRegenerationAttribute);
+	TagsToAttributesMap.Add(GameplayTags.Attributes_Secondary_HealthRegeneration, HealthRegenerationDelegate);
+
+	FAttributeSignature ManaRegenerationDelegate;
+	ManaRegenerationDelegate.BindStatic(GetManaRegenerationAttribute);
+	TagsToAttributesMap.Add(GameplayTags.Attributes_Secondary_ManaRegeneration, ManaRegenerationDelegate);
 }
 
 void UAuraAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth)
