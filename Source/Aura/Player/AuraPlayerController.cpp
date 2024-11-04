@@ -3,14 +3,16 @@
 
 #include "AuraPlayerController.h"
 #include "EnhancedInputSubsystems.h"
-#include "EnhancedInputComponent.h"
 #include "Aura/Interfaces/EnemyInterface.h"
+#include "Aura/Input/AuraInputComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 AAuraPlayerController::AAuraPlayerController()
 {
 	// There's a first time for everything.d (How on earth this possible Hollysh....)
 	bReplicates = true;
+
+	
 }
 
 void AAuraPlayerController::BeginPlay()
@@ -35,12 +37,11 @@ void AAuraPlayerController::BeginPlay()
 void AAuraPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
-
 	if(!ControlledPawn) ControlledPawn = GetPawn();
-	
-	UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent);
-	EnhancedInputComponent->BindAction(MoveAction,ETriggerEvent::Triggered,this,&AAuraPlayerController::Move);
-	
+
+	UAuraInputComponent* AuraInputComponent = Cast<UAuraInputComponent>(InputComponent);
+	AuraInputComponent->BindAction(MoveAction,ETriggerEvent::Triggered,this,&AAuraPlayerController::Move);
+	AuraInputComponent->BindAbilityActions(InputConfig,this,&ThisClass::AbilityInputTagPressed,&ThisClass::AbilityInputTagReleased,&ThisClass::AbilityInputTagHeld);
 }
 
 void AAuraPlayerController::PlayerTick(float DeltaTime)
@@ -84,4 +85,19 @@ void AAuraPlayerController::Move(const FInputActionValue& InputValue)
 	if(!ControlledPawn) return;
 	ControlledPawn->AddMovementInput(ForwardDirection,Value.Y);
 	ControlledPawn->AddMovementInput(RightDirection,Value.X);
+}
+
+void AAuraPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
+{
+	
+}
+
+void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
+{
+	
+}
+
+void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
+{
+	
 }	

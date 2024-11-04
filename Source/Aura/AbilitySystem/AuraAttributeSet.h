@@ -13,9 +13,6 @@
 	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
-// We bound static so we can execute the function anytime we want. Then we can capture the return value. We don't need to broadcast.
-DECLARE_DELEGATE_RetVal(FGameplayAttribute,FAttributeSignature)
-
 USTRUCT(BlueprintType)
 struct FEffectProperties
 {
@@ -57,6 +54,12 @@ struct FEffectProperties
 	
 };
 
+
+typedef TBaseStaticDelegateInstance<FGameplayAttribute(),FDefaultDelegateUserPolicy>::FFuncPtr FAttributeFncPtr;
+
+template <class T>
+using TAttributeFncPtr = typename TBaseStaticDelegateInstance<T,FDefaultDelegateUserPolicy>::FFuncPtr;
+
 UCLASS()
 class AURA_API UAuraAttributeSet : public UAttributeSet
 {
@@ -65,8 +68,16 @@ class AURA_API UAuraAttributeSet : public UAttributeSet
 public:
 
 	UAuraAttributeSet();
+	 
+	// Expansion of a delegate actually.
+	//TMap<FGameplayTag, TBaseStaticDelegateInstance<FGameplayAttribute(),FDefaultDelegateUserPolicy>::FFuncPtr> TagsToAttributesMap;
+	//TMap<FGameplayTag, FAttributeFncPtr> TagsToAttributesMap;
+	//TMap<FGameplayTag, TAttributeFncPtr<FGameplayAttribute()>> TagsToAttributesMap;
 	
-	TMap<FGameplayTag, FAttributeSignature> TagsToAttributesMap;
+	// Much better syntax: 
+	TMap<FGameplayTag, FGameplayAttribute(*)()> TagsToAttributesMap;
+
+
 	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,ReplicatedUsing=OnRep_Health)
 	FGameplayAttributeData Health;

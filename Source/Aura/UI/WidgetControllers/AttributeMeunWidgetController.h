@@ -6,6 +6,8 @@
 #include "Aura/UI/WidgetControllers/AuraWidgetController.h"
 #include "AttributeMeunWidgetController.generated.h"
 
+struct FGameplayAttribute;
+struct FGameplayTag;
 struct FAuraAttributeInfo;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAttributeInfoSignature, const FAuraAttributeInfo&, Info);
@@ -30,4 +32,6 @@ protected:
 
 	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	class UAttributeInfoDataAsset* AttributeInfoDataAsset;
+
+	void BroadcastAttributeInfo(const FGameplayTag& AttributeTag, const FGameplayAttribute& Attribute) const;
 };
