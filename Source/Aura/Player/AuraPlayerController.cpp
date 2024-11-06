@@ -134,7 +134,10 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 
 	if(FollowTime <= ShortPressTreshold)
 	{
-		UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(GetWorld(),GetPawn()->GetActorLocation(),CachedDestination);
+		FollowTime = 0;
+		bIsMouseCursorTargeting = false;
+		
+		UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(this,GetPawn()->GetActorLocation(),CachedDestination);
 		if(!NavPath) return;
 
 		AutoRunSpline->ClearSplinePoints();
@@ -143,6 +146,8 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 			AutoRunSpline->AddSplinePoint(Point,ESplineCoordinateSpace::World);
 			DrawDebugSphere(GetWorld(),Point,8,8,FColor::Purple,false,5);
 		}
+
+		bAutoRunning = true;
 	}
 
 
