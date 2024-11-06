@@ -26,13 +26,16 @@ protected:
 
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
+	void AutoRun();
 	virtual void PlayerTick(float DeltaTime) override;
 	
-	class UAuraAbilitySystemComponent* GetAuraAbilitySystemComponent();
-	
+	class UAuraAbilitySystemComponent* GetASC();
+
+	FHitResult CursorHit;
+
 
 private:
-
+	
 	void CursorTrace();
 
     UPROPERTY(EditAnywhere,Category=Input,meta=(AllowPrivateAccess=true))
@@ -43,10 +46,7 @@ private:
 	
 	UFUNCTION()
 	void Move(const FInputActionValue& InputValue);
-
-	UPROPERTY()
-	APawn* ControlledPawn = nullptr;
-
+	
 	IEnemyInterface* LastHoveredActor;
 	IEnemyInterface* CurrentHoveredActor;
 
@@ -62,7 +62,7 @@ private:
 
 	FVector CachedDestination = FVector::ZeroVector;
 
-	float FollowTime = 0.0f, ShortPressTreshold = 0.5f;
+	float FollowTime = 0.0f, ShortPressThreshold = 0.5f;
 
 	// In cm.
 	UPROPERTY(EditDefaultsOnly)
@@ -73,5 +73,5 @@ private:
 	bool bIsMouseCursorTargeting = false;
 
 	UPROPERTY(EditAnywhere)
-	class USplineComponent* AutoRunSpline = nullptr;
+	class USplineComponent* Spline = nullptr;
 };
