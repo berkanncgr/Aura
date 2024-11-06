@@ -9,6 +9,7 @@
 #include "Aura/Interfaces/CombatInterface.h"
 #include "AuraCharacterBase.generated.h"
 
+
 class UGameplayEffect;
 class UAttributeSet;
 
@@ -41,6 +42,8 @@ protected:
 
 	virtual void InitializeDefaultAttributes();
 	virtual void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClass,float Level);
+
+	void AddCharacterAbilities();
 	
 	UPROPERTY(EditAnywhere,Category=Combat)
 	TObjectPtr<USkeletalMeshComponent> Weapon;
@@ -59,5 +62,7 @@ protected:
 
 	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	TSubclassOf<UGameplayEffect> DefaultVitalAttributes;
-	
+
+	UPROPERTY(EditAnywhere,BlueprintReadOnly)
+	TArray<TSubclassOf<class UGameplayAbility>> StartupAbilities;	
 };

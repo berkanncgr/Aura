@@ -1,6 +1,7 @@
 
 #include "AuraAbilitySystemComponent.h"
 
+#include "Abilities/AuraGameplayAbility.h"
 #include "Aura/AuraGameplayTags.h"
 #include "Kismet/KismetSystemLibrary.h"
 
@@ -22,4 +23,47 @@ void UAuraAbilitySystemComponent::EffectApplied(UAbilitySystemComponent* Ability
 	FGameplayTagContainer TagContainer;
 	EffectSpec.GetAllAssetTags(TagContainer);
 	EffectAssetTags.Broadcast(TagContainer);
+}
+ 
+
+void UAuraAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities)
+{
+	for(TSubclassOf<UGameplayAbility> AbilityClass:StartupAbilities)
+	{
+		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass,1);
+
+		const UAuraGameplayAbility* AuraAbility = Cast<UAuraGameplayAbility>(AbilitySpec.Ability);
+		AbilitySpec.DynamicAbilityTags.AddTag(AuraAbility->StartupInputTag);
+		GiveAbility(AbilitySpec);
+		//GiveAbilityAndActivateOnce(AbilitySpec);
+	}
+}
+
+void UAuraAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InputTag)
+{
+	if(!InputTag.IsValid()) return;
+
+	TArray<FGameplayAbilitySpec> ActiveAbilities = GetActivatableAbilities();
+	
+	for(FGameplayAbilitySpec AbilitySpec : ActiveAbilities)
+	{
+		if(!AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag)) continue;
+
+		AbilitySpecInputPressed(AbilitySpec);
+		if(!AbilitySpec.IsActive())
+		{
+			TryActivateAbility(AbilitySpec.Handle);
+		}
+	}
+}
+
+void UAuraAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& InputTag)
+{
+	if(!InputTag.IsValid()) return;
+
+	for(FGameplayAbilitySpec AbilitySpec : GetActivatableAbilities())
+	{
+		if(!AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag)) continue;
+		AbilitySpecInputReleased(AbilitySpec);
+	}
 }

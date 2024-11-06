@@ -27,6 +27,9 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
 	virtual void PlayerTick(float DeltaTime) override;
+	
+	class UAuraAbilitySystemComponent* GetAuraAbilitySystemComponent();
+	
 
 private:
 
@@ -53,4 +56,22 @@ private:
 	void AbilityInputTagPressed(FGameplayTag InputTag);
 	void AbilityInputTagReleased(FGameplayTag InputTag);
 	void AbilityInputTagHeld(FGameplayTag InputTag);
+
+	UPROPERTY(BlueprintReadWrite,meta=(AllowPrivateAccess=true))
+	UAuraAbilitySystemComponent* AuraAbilitySystemComponent;
+
+	FVector CachedDestination = FVector::ZeroVector;
+
+	float FollowTime = 0.0f, ShortPressTreshold = 0.5f;
+
+	// In cm.
+	UPROPERTY(EditDefaultsOnly)
+	float AutoRunAcceptanceRadius = 50.f;
+
+	bool bAutoRunning = false;
+
+	bool bIsMouseCursorTargeting = false;
+
+	UPROPERTY(EditAnywhere)
+	class USplineComponent* AutoRunSpline = nullptr;
 };
