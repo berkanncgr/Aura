@@ -5,6 +5,8 @@
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "EnhancedInputSubsystems.h"
+#include "NavigationPath.h"
+#include "NavigationSystem.h"
 #include "Aura/AuraGameplayTags.h"
 #include "Aura/AbilitySystem/AuraAbilitySystemComponent.h"
 #include "Aura/Interfaces/EnemyInterface.h"
@@ -104,58 +106,74 @@ void AAuraPlayerController::Move(const FInputActionValue& InputValue)
 
 void AAuraPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
-	/*FString M = FString::Printf(TEXT("InputPressed %s"),*InputTag.ToString());
-	UKismetSystemLibrary::PrintString(GetWorld(),M,1,1,FColor::Purple,1);*/
-
+	if(!GetAuraAbilitySystemComponent()) return;
+	
 	if(InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
 	{
 		bAutoRunning = false;
 		bIsMouseCursorTargeting = CurrentHoveredActor ? true : false;
 	}
-
-
+	
 }
 
 void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
-	/*FString M = FString::Printf(TEXT("InputReleased %s"),*InputTag.ToString());
-	UKismetSystemLibrary::PrintString(GetWorld(),M,1,1,FColor::Purple,1);*/
+	if(!GetAuraAbilitySystemComponent()) return;
 	
-	if(!GetAuraAbilitySystemComponent()) return;
-	GetAuraAbilitySystemComponent()->AbilityInputTagReleased(InputTag);
-}
-
-void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
-{
-
-	/*FString M = FString::Printf(TEXT("InputHolding %s"),*InputTag.ToString());
-	float T = GetWorld()->GetDeltaSeconds();
-	UKismetSystemLibrary::PrintString(GetWorld(),M,1,1,FColor::Red,T);*/
-
-	if(!GetAuraAbilitySystemComponent()) return;
-
-	if(!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
+	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
 	{
-		GetAuraAbilitySystemComponent()->AbilityInputTagHeld(InputTag);
+		GetAuraAbilitySystemComponent()->AbilityInputTagReleased(InputTag);
 		return;
 	}
 
 	if(bIsMouseCursorTargeting)
 	{
+		GetAuraAbilitySystemComponent()->AbilityInputTagReleased(InputTag);
+		return;
+	}
+
+	if(FollowTime <= ShortPressTreshold)
+	{
+		UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(GetWorld(),GetPawn()->GetActorLocation(),CachedDestination);
+		if(!NavPath) return;
+
+		AutoRunSpline->ClearSplinePoints();
+		for(const FVector& Point :  NavPath->PathPoints)
+		{
+			AutoRunSpline->AddSplinePoint(Point,ESplineCoordinateSpace::World);
+			DrawDebugSphere(GetWorld(),Point,8,8,FColor::Purple,false,5);
+		}
+	}
+
+
+	
+}
+
+void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
+{
+	if(!GetAuraAbilitySystemComponent()) return;
+
+	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
+	{
 		GetAuraAbilitySystemComponent()->AbilityInputTagHeld(InputTag);
 		return;
 	}
 
-	// Click to move behaivour:
+	if (bIsMouseCursorTargeting)
+	{
+		GetAuraAbilitySystemComponent()->AbilityInputTagHeld(InputTag);
+		return;
+	}
+	
 	FollowTime += GetWorld()->GetDeltaSeconds();
 
-	FHitResult HitResult;
-	bool bIsThereHit = GetHitResultUnderCursor(ECC_Visibility,false,HitResult);
-	if(!bIsThereHit) return;
-	CachedDestination = HitResult.ImpactPoint;
-
+	FHitResult Hit;
+	if (!GetHitResultUnderCursor(ECC_Visibility, false, Hit)) return;
+	CachedDestination = Hit.ImpactPoint;
+	
 	APawn* _Pawn = GetPawn();
-	if(!_Pawn) return;
-	FVector WorldDirection = (CachedDestination - _Pawn->GetActorForwardVector()).GetSafeNormal();
-	_Pawn->AddMovementInput(WorldDirection);
+	if (!_Pawn) return;
+	const FVector WorldDirection = (CachedDestination - _Pawn->GetActorLocation()).GetSafeNormal();
+	ControlledPawn->AddMovementInput(WorldDirection);
+	
 }	
