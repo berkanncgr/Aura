@@ -25,6 +25,11 @@ AActor* AAuraCharacterBase::GetSelfAsActor()
 }
 
 
+FVector AAuraCharacterBase::GetCombatSocketLocation()
+{
+	return Weapon->GetSocketLocation(WeaponTipSocketName);
+}
+
 void AAuraCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();

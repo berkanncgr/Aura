@@ -82,7 +82,7 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 	}
 	
 	if(!GetPawn()) return;
-	if (FollowTime <= ShortPressThreshold && GetPawn())
+	if (FollowTime <= ShortPressThreshold)
 	{
 		if (UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(this, GetPawn()->GetActorLocation(), CachedDestination))
 		{
@@ -95,6 +95,7 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 			bAutoRunning = true;
 		}
 	}
+	
 	FollowTime = 0.f;
 	bIsMouseCursorTargeting = false;
 	

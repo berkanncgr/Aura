@@ -23,4 +23,7 @@ class AURA_API ICombatInterface
 public:
 
 	virtual int32 GetPlayerLevel() { return 0;}
+
+	// Projectile spawn location:
+	virtual FVector GetCombatSocketLocation() { return FVector::ZeroVector;}
 };

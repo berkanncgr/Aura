@@ -42,6 +42,8 @@ public:
 	FGameplayTag InputTag_3;
 	FGameplayTag InputTag_4;
 
+	FGameplayTag Event_Montage_FireBolt;
+
 private:
 
 	// what is the idea of this, should be more clear.

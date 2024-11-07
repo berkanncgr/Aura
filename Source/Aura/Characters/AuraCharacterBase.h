@@ -33,7 +33,8 @@ public:
 	FORCEINLINE UAttributeSet* GetAttributeSet() const
 	{ return AttributeSet;}
 
-	
+	virtual FVector GetCombatSocketLocation();
+
 
 protected:
 	
@@ -64,5 +65,8 @@ protected:
 	TSubclassOf<UGameplayEffect> DefaultVitalAttributes;
 
 	UPROPERTY(EditAnywhere,BlueprintReadOnly)
-	TArray<TSubclassOf<class UGameplayAbility>> StartupAbilities;	
+	TArray<TSubclassOf<class UGameplayAbility>> StartupAbilities;
+
+	UPROPERTY(EditAnywhere,BlueprintReadOnly)
+	FName WeaponTipSocketName;
 };

@@ -29,10 +29,13 @@ void FAuraGameplayTags::InitialieNativeGameplayTags()
 	// Input Tags:
 	GameplayTags.InputTag_LMB =	 UGameplayTagsManager::Get().AddNativeGameplayTag(FName("InputTag.LMB"),("Left Mouse Button Input"));
 	GameplayTags.InputTag_RMB =	 UGameplayTagsManager::Get().AddNativeGameplayTag(FName("InputTag.RMB"),("Right Mouse Button Input"));
-	GameplayTags.InputTag_1 =	 UGameplayTagsManager::Get().AddNativeGameplayTag(FName("InputTag.1"),("1 Key Input"));
-	GameplayTags.InputTag_2 =	 UGameplayTagsManager::Get().AddNativeGameplayTag(FName("InputTag.2"),("2 Key Input"));
-	GameplayTags.InputTag_3 =	 UGameplayTagsManager::Get().AddNativeGameplayTag(FName("InputTag.3"),("3 Key Input"));
-	GameplayTags.InputTag_4 =	 UGameplayTagsManager::Get().AddNativeGameplayTag(FName("InputTag.4"),("4 Key Input"));
+	GameplayTags.InputTag_1   =	 UGameplayTagsManager::Get().AddNativeGameplayTag(FName("InputTag.1"),("1 Key Input"));
+	GameplayTags.InputTag_2   =	 UGameplayTagsManager::Get().AddNativeGameplayTag(FName("InputTag.2"),("2 Key Input"));
+	GameplayTags.InputTag_3   =	 UGameplayTagsManager::Get().AddNativeGameplayTag(FName("InputTag.3"),("3 Key Input"));
+	GameplayTags.InputTag_4   =	 UGameplayTagsManager::Get().AddNativeGameplayTag(FName("InputTag.4"),("4 Key Input"));
+
+	// Events:
+	GameplayTags.Event_Montage_FireBolt = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Event.Montage.FireBolt"),("AM_Cast_FireBolt Montage Anim Notify"));
 
 
 }
