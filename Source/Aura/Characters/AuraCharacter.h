@@ -22,10 +22,16 @@ public:
 	virtual void InitAbilityActorInfo() override;
 	virtual void OnRep_PlayerState() override;
 	virtual int32 GetPlayerLevel() override;
+
+	UFUNCTION(BlueprintCallable)
+	void SetFacingTarget(FVector FacingTarget);
 	
 protected:
 
-	
-	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	class UMotionWarpingComponent* MotionWarping;
+
+	FORCEINLINE virtual void UpdateFacingTarget_Implementation(const FVector& Location) override
+	{ SetFacingTarget (Location); }
 	
 };

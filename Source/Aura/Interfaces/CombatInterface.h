@@ -26,4 +26,8 @@ public:
 
 	// Projectile spawn location:
 	virtual FVector GetCombatSocketLocation() { return FVector::ZeroVector;}
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void UpdateFacingTarget(const FVector& Location);
+	virtual void UpdateFacingTarget_Implementation(const FVector& Location){};
 };

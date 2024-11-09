@@ -3,6 +3,7 @@
 #include "AuraCharacter.h"
 
 #include "AbilitySystemComponent.h"
+#include "../../../../../../../../Programs/UE_5.3/Engine/Plugins/Animation/MotionWarping/Source/MotionWarping/Public/MotionWarpingComponent.h"
 #include "Aura/AbilitySystem/AuraAbilitySystemComponent.h"
 #include "Aura/Player/AuraPlayerController.h"
 #include "Aura/Player/AuraPlayerState.h"
@@ -19,6 +20,8 @@ AAuraCharacter::AAuraCharacter()
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 400.f, 0.f);
 	GetCharacterMovement()->bConstrainToPlane = true;
 	GetCharacterMovement()->bSnapToPlaneAtStart = true;
+
+	MotionWarping = CreateDefaultSubobject<UMotionWarpingComponent>("MotionWarping");
 }
 
 void AAuraCharacter::PossessedBy(AController* NewController)
@@ -44,6 +47,8 @@ int32 AAuraCharacter::GetPlayerLevel()
 	return PS->GetPlayerLevel();
 }
 
+
+
 void AAuraCharacter::InitAbilityActorInfo()
 {
 	AAuraPlayerState* PS = GetPlayerState<AAuraPlayerState>();
@@ -66,4 +71,11 @@ void AAuraCharacter::InitAbilityActorInfo()
 	Hud->InitOverlay(Pc,PS,AbilitySystemComponent,AttributeSet);
 }
 
-
+void AAuraCharacter::SetFacingTarget(FVector FacingTarget)
+{
+	FMotionWarpingTarget MotionWarpingTarget;
+	MotionWarpingTarget.Location = FacingTarget;
+	MotionWarpingTarget.Name = "FacingTarget";
+	
+	MotionWarping->AddOrUpdateWarpTarget(MotionWarpingTarget);
+}
