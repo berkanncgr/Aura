@@ -22,13 +22,16 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FMouseTargetDataDelegate ValidData;
+	
+	virtual void Activate() override;
 
 private:
 
-	virtual void Activate() override;
 
+	
 	void SendMouseCursorData();
 
 	UFUNCTION()
 	void OnTargetDataReplicationCallback(const FGameplayAbilityTargetDataHandle& DataHandle, FGameplayTag ActivationTag);
+	
 };

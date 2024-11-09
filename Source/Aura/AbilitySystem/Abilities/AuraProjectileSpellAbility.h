@@ -22,6 +22,28 @@ protected:
 	TSubclassOf<AAuraProjectile> ProjectileClass;
 
 	UFUNCTION(BlueprintCallable)
-	void SpawnProjectile();
+	void SpawnProjectile(const  FVector& ProjectileTargetLocation);
+	
+	UFUNCTION()
+	void ValidatDataGet(const FGameplayAbilityTargetDataHandle& DataHandle);
+
+	UFUNCTION()
+	void EventReceived(FGameplayEventData GameplayEventData);
+
+	UFUNCTION()
+	void MontageCompleted();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_EndAbilty();
+	
+	FVector Location;
+
+	UPROPERTY(EditDefaultsOnly)
+	UAnimMontage* ProjectileMontage;
+
+	
+
+	
+
 	
 };

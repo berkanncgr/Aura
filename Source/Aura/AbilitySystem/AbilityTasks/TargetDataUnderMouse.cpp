@@ -4,6 +4,7 @@
 #include "Aura/AbilitySystem/AbilityTasks/TargetDataUnderMouse.h"
 
 #include "AbilitySystemComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 UTargetDataUnderMouse* UTargetDataUnderMouse::CreateTargetDataUnderMouse(UGameplayAbility* OwningAbility)
 {
@@ -32,11 +33,13 @@ void UTargetDataUnderMouse::Activate()
 	}
 }
 
+
+
 void UTargetDataUnderMouse::SendMouseCursorData()
 {
 	// THIS IS MAGIC!!!!! (Research MORE!!)
 	FScopedPredictionWindow ScopedPredictionWindow(AbilitySystemComponent.Get());
-	
+	 
 	APlayerController* PC = Ability->GetCurrentActorInfo()->PlayerController.Get();
 	if(!PC) return;
 

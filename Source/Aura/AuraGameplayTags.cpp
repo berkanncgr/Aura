@@ -33,7 +33,8 @@ void FAuraGameplayTags::InitialieNativeGameplayTags()
 	GameplayTags.InputTag_2   =	 UGameplayTagsManager::Get().AddNativeGameplayTag(FName("InputTag.2"),("2 Key Input"));
 	GameplayTags.InputTag_3   =	 UGameplayTagsManager::Get().AddNativeGameplayTag(FName("InputTag.3"),("3 Key Input"));
 	GameplayTags.InputTag_4   =	 UGameplayTagsManager::Get().AddNativeGameplayTag(FName("InputTag.4"),("4 Key Input"));
-
+	GameplayTags.InputTag_Shift   =	 UGameplayTagsManager::Get().AddNativeGameplayTag(FName("InputTag.Shift"),("Shift Keys Input"));
+	
 	// Events:
 	GameplayTags.Event_Montage_FireBolt = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Event.Montage.FireBolt"),("AM_Cast_FireBolt Montage Anim Notify"));
 

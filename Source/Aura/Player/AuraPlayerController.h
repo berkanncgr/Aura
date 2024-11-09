@@ -34,6 +34,7 @@ protected:
 	FHitResult CursorHit;
 
 
+
 private:
 	
 	void CursorTrace();
@@ -43,9 +44,22 @@ private:
 
 	UPROPERTY(EditAnywhere,Category=Input,meta=(AllowPrivateAccess=true))
 	TObjectPtr<UInputAction> MoveAction;
+
+	UPROPERTY(EditAnywhere,Category=Input,meta=(AllowPrivateAccess=true))
+	UInputAction* ShiftAction;
 	
 	UFUNCTION()
 	void Move(const FInputActionValue& InputValue);
+
+	UFUNCTION()
+	FORCEINLINE void ShiftActionStarted()
+	{ bIsShiftKeyDown = true; }
+
+	UFUNCTION()
+	FORCEINLINE void ShiftActionCompleted()
+	{ bIsShiftKeyDown = false; }
+
+	bool bIsShiftKeyDown = false;
 	
 	IEnemyInterface* LastHoveredActor;
 	IEnemyInterface* CurrentHoveredActor;

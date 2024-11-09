@@ -75,30 +75,29 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 		return;
 	}
 
-	if (bIsMouseCursorTargeting)
+	GetASC()->AbilityInputTagReleased(InputTag);
+
+
+	if (!bIsMouseCursorTargeting && !bIsShiftKeyDown)
 	{
-		GetASC()->AbilityInputTagReleased(InputTag);
-		return;
-	}
-	
-	if(!GetPawn()) return;
-	if (FollowTime <= ShortPressThreshold)
-	{
-		if (UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(this, GetPawn()->GetActorLocation(), CachedDestination))
+		if(!GetPawn()) return;
+		if (FollowTime <= ShortPressThreshold)
 		{
-			Spline->ClearSplinePoints();
-			for (const FVector& PointLoc : NavPath->PathPoints)
+			if (UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(this, GetPawn()->GetActorLocation(), CachedDestination))
 			{
-				Spline->AddSplinePoint(PointLoc, ESplineCoordinateSpace::World);
+				Spline->ClearSplinePoints();
+				for (const FVector& PointLoc : NavPath->PathPoints)
+				{
+					Spline->AddSplinePoint(PointLoc, ESplineCoordinateSpace::World);
+				}
+				CachedDestination = NavPath->PathPoints[NavPath->PathPoints.Num() - 1];
+				bAutoRunning = true;
 			}
-			CachedDestination = NavPath->PathPoints[NavPath->PathPoints.Num() - 1];
-			bAutoRunning = true;
 		}
+	
+		FollowTime = 0.f;
+		bIsMouseCursorTargeting = false;
 	}
-	
-	FollowTime = 0.f;
-	bIsMouseCursorTargeting = false;
-	
 }
 
 void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
@@ -111,7 +110,7 @@ void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 		return;
 	}
 
-	if (bIsMouseCursorTargeting)
+	if (bIsMouseCursorTargeting || bIsShiftKeyDown)
 	{
 		GetASC()->AbilityInputTagHeld(InputTag);
 		return;
@@ -162,6 +161,9 @@ void AAuraPlayerController::SetupInputComponent()
 
 	UAuraInputComponent* AuraInputComponent = CastChecked<UAuraInputComponent>(InputComponent);
 	AuraInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AAuraPlayerController::Move);
+	AuraInputComponent->BindAction(ShiftAction, ETriggerEvent::Started, this, &AAuraPlayerController::ShiftActionStarted);
+	AuraInputComponent->BindAction(ShiftAction, ETriggerEvent::Completed, this, &AAuraPlayerController::ShiftActionCompleted);
+	
 	AuraInputComponent->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
 }
 
