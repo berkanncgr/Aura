@@ -25,6 +25,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetFacingTarget(FVector FacingTarget);
+
+
 	
 protected:
 

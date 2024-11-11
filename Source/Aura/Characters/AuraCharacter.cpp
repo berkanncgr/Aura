@@ -8,6 +8,7 @@
 #include "Aura/Player/AuraPlayerController.h"
 #include "Aura/Player/AuraPlayerState.h"
 #include "Aura/UI/HUD/AuraHUD.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 
@@ -20,6 +21,8 @@ AAuraCharacter::AAuraCharacter()
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 400.f, 0.f);
 	GetCharacterMovement()->bConstrainToPlane = true;
 	GetCharacterMovement()->bSnapToPlaneAtStart = true;
+
+	GetCapsuleComponent()->SetGenerateOverlapEvents(false);
 
 	MotionWarping = CreateDefaultSubobject<UMotionWarpingComponent>("MotionWarping");
 }
@@ -79,3 +82,4 @@ void AAuraCharacter::SetFacingTarget(FVector FacingTarget)
 	
 	MotionWarping->AddOrUpdateWarpTarget(MotionWarpingTarget);
 }
+

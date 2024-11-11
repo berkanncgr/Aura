@@ -68,5 +68,5 @@ protected:
 	TArray<TSubclassOf<class UGameplayAbility>> StartupAbilities;
 
 	UPROPERTY(EditAnywhere,BlueprintReadOnly)
-	FName WeaponTipSocketName;
+	FName WeaponTipSocketName = "TipSocket";
 };

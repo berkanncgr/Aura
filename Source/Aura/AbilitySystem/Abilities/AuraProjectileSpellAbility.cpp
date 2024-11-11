@@ -3,6 +3,7 @@
 
 #include "Aura/AbilitySystem/Abilities/AuraProjectileSpellAbility.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "Abilities/Tasks/AbilityTask_PlayMontageAndWait.h"
 #include "Abilities/Tasks/AbilityTask_WaitGameplayEvent.h"
@@ -69,10 +70,8 @@ void UAuraProjectileSpellAbility::SpawnProjectile(const FVector& ProjectileTarge
 	APawn* Pawn = Cast<APawn>(GetOwningActorFromActorInfo());
 	AAuraProjectile* Projectile =  GetWorld()->SpawnActorDeferred<AAuraProjectile>(ProjectileClass,SpawnTransform,Pawn,Pawn,ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 
-	
-	//@todo: Give the projectile GameplayEffect Spec for causing damage.
-	
+	const UAbilitySystemComponent* SourceASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetAvatarActorFromActorInfo());
+	const FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(ProjectileDamageEffectClass, GetAbilityLevel(), SourceASC->MakeEffectContext());
+	Projectile->DamageEffectSpecHandle = SpecHandle;
 	Projectile->FinishSpawning(SpawnTransform);
-
-	//EndAbility();
 }

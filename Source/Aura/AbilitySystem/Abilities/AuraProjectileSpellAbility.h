@@ -41,9 +41,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	UAnimMontage* ProjectileMontage;
 
-	
-
-	
-
-	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UGameplayEffect> ProjectileDamageEffectClass;	
 };

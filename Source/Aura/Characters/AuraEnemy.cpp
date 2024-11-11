@@ -5,6 +5,7 @@
 
 #include "AbilitySystemComponent.h"
 #include "Aura/AbilitySystem/AuraAbilitySystemComponent.h"
+#include "Aura/AbilitySystem/AuraAttributeSet.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 AAuraEnemy::AAuraEnemy()
@@ -15,7 +16,7 @@ AAuraEnemy::AAuraEnemy()
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
 	
-	AttributeSet = CreateDefaultSubobject<UAttributeSet>("AttributeSet");
+	AttributeSet = CreateDefaultSubobject<UAuraAttributeSet>("AttributeSet");
 }
 
 void AAuraEnemy::BeginPlay()
@@ -23,6 +24,16 @@ void AAuraEnemy::BeginPlay()
 	Super::BeginPlay();
 	InitAbilityActorInfo();
 }
+
+void AAuraEnemy::InitAbilityActorInfo()
+{
+	AbilitySystemComponent->InitAbilityActorInfo(this,this);
+	UAuraAbilitySystemComponent* AAS = Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent);
+	AAS->AbilityActorInfoSet();
+
+	InitializeDefaultAttributes();
+}
+
 
 void AAuraEnemy::HighlightActor()
 {
@@ -40,13 +51,6 @@ void AAuraEnemy::UnHiglightActor()
 	Weapon->SetRenderCustomDepth(false);
 }
 
-void AAuraEnemy::InitAbilityActorInfo()
-{
-	AbilitySystemComponent->InitAbilityActorInfo(this,this);
-	UAuraAbilitySystemComponent* AAS = Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent);
-	if(AAS) AAS->AbilityActorInfoSet();
-	else { UKismetSystemLibrary::PrintString(GetWorld(),TEXT("Ability Cast NULL Enemy"));}
-}
 
 
 
