@@ -5,11 +5,9 @@
 #include "CoreMinimal.h"
 #include "AuraCharacterBase.h"
 #include "Aura/Interfaces/EnemyInterface.h"
+#include "Aura/UI/WidgetControllers/OverlayWidgetController.h"
 #include "AuraEnemy.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class AURA_API AAuraEnemy : public AAuraCharacterBase, public IEnemyInterface
 {
@@ -18,6 +16,8 @@ class AURA_API AAuraEnemy : public AAuraCharacterBase, public IEnemyInterface
 public:
 
 	AAuraEnemy();
+	void InitializeHealthBarWidget();
+
 	virtual void BeginPlay() override;
 	
 	virtual void HighlightActor() override;
@@ -29,12 +29,16 @@ public:
 protected:
 
 	virtual void InitAbilityActorInfo() override;
-
+	
 	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	int32 Level = 1;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    class UWidgetComponent* HealthBarWidgetComponent;
 
-	
+	UPROPERTY(BlueprintAssignable)
+	FOnAttributeChangedSignature OnHealthChanged;
 
-	
+	UPROPERTY(BlueprintAssignable)
+	FOnAttributeChangedSignature OnMaxHealthChanged;
 };
