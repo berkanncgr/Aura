@@ -5,6 +5,7 @@
 
 #include "AbilitySystemComponent.h"
 #include "Aura/AbilitySystem/AuraAbilitySystemComponent.h"
+#include "Aura/AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "Aura/AbilitySystem/AuraAttributeSet.h"
 #include "Aura/UI/Widgets/AuraUserWidget.h"
 #include "Components/WidgetComponent.h"
@@ -15,13 +16,13 @@ AAuraEnemy::AAuraEnemy()
 	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility,ECR_Block);
 
 	AbilitySystemComponent = CreateDefaultSubobject<UAuraAbilitySystemComponent>("AbilitySystemComponent");
-	AbilitySystemComponent->SetIsReplicated(true);
-	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
+	AbilitySystemComponent ->SetIsReplicated(true);
+	AbilitySystemComponent ->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
 	
 	AttributeSet = CreateDefaultSubobject<UAuraAttributeSet>("AttributeSet");
 
 	HealthBarWidgetComponent = CreateDefaultSubobject<UWidgetComponent>("HealthBarWidgetComponent");
-	HealthBarWidgetComponent->SetupAttachment(GetRootComponent());
+	HealthBarWidgetComponent ->SetupAttachment(GetRootComponent());
 }
 
 void AAuraEnemy::InitializeHealthBarWidget()
@@ -60,6 +61,11 @@ void AAuraEnemy::InitAbilityActorInfo()
 	InitializeDefaultAttributes();
 }
 
+void AAuraEnemy::InitializeDefaultAttributes()
+{
+	UAuraAbilitySystemLibrary::InitializeDefaultAttributes(GetWorld(),CharacterClass,Level,AbilitySystemComponent);
+}
+
 
 void AAuraEnemy::HighlightActor()
 {
@@ -76,7 +82,3 @@ void AAuraEnemy::UnHiglightActor()
 	Weapon->SetCustomDepthStencilValue(0);
 	Weapon->SetRenderCustomDepth(false);
 }
-
-
-
-
