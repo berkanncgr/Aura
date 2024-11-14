@@ -69,7 +69,7 @@ public:
 
 	UAuraAttributeSet();
 	 
-	// Expansion of a delegate actually.
+	// Expansion of a delegate, actually.
 	//TMap<FGameplayTag, TBaseStaticDelegateInstance<FGameplayAttribute(),FDefaultDelegateUserPolicy>::FFuncPtr> TagsToAttributesMap;
 	//TMap<FGameplayTag, FAttributeFncPtr> TagsToAttributesMap;
 	//TMap<FGameplayTag, TAttributeFncPtr<FGameplayAttribute()>> TagsToAttributesMap;
@@ -142,6 +142,12 @@ public:
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_ManaRegeneration, Category = "Secondary Attributes")
 	FGameplayAttributeData ManaRegeneration;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, ManaRegeneration);
+
+	/** Meta Attributes */
+	UPROPERTY(BlueprintReadOnly,Category= "Meta Attributes")
+	FGameplayAttributeData IncomingDamage;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, IncomingDamage);
+
 
 protected:
 
