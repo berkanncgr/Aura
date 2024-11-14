@@ -38,5 +38,6 @@ void FAuraGameplayTags::InitialieNativeGameplayTags()
 	// Events:
 	GameplayTags.Event_Montage_FireBolt = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Event.Montage.FireBolt"),("AM_Cast_FireBolt Montage Anim Notify"));
 
+	GameplayTags.Damage = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Damage"),("Damage"));
 
 }
