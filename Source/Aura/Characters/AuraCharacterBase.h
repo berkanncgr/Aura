@@ -35,6 +35,9 @@ public:
 
 	virtual FVector GetCombatSocketLocation();
 
+	FORCEINLINE virtual UAnimMontage* GetHitReactMontage_Implementation() override
+	{ return HitReactMontage; }
+
 
 protected:
 	
@@ -69,4 +72,8 @@ protected:
 
 	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	FName WeaponTipSocketName = "TipSocket";
+
+	UPROPERTY(EditAnywhere,BlueprintReadOnly)
+	UAnimMontage* HitReactMontage;
+
 };

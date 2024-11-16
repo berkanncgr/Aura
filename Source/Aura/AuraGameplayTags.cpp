@@ -40,4 +40,5 @@ void FAuraGameplayTags::InitialieNativeGameplayTags()
 
 	GameplayTags.Damage = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Damage"),("Damage"));
 
+	GameplayTags.Effects_HitReact = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Effects.HitReact"),("When damage is taken"));
 }

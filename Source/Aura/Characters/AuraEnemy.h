@@ -19,6 +19,7 @@ public:
 	AAuraEnemy();
 	void InitializeHealthBarWidget();
 
+
 	virtual void BeginPlay() override;
 	
 	virtual void HighlightActor() override;
@@ -27,6 +28,10 @@ public:
 	FORCEINLINE virtual int32 GetPlayerLevel() override { return Level; }
 	FORCEINLINE virtual ECharacterClass GetCharacterClass() const override { return CharacterClass; }
 
+	void HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
+
+	
+	
 protected:
 
 	virtual void InitAbilityActorInfo() override;
@@ -46,4 +51,11 @@ protected:
 
 	UPROPERTY(BlueprintAssignable)
 	FOnAttributeChangedSignature OnMaxHealthChanged;
+
+	UPROPERTY(BlueprintReadOnly)
+	bool bHitReacting = false;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	float BaseWalkSpeed = 250;
+
 };
