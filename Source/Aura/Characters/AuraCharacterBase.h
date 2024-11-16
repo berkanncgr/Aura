@@ -38,6 +38,11 @@ public:
 	FORCEINLINE virtual UAnimMontage* GetHitReactMontage_Implementation() override
 	{ return HitReactMontage; }
 
+	virtual void Die_Implementation() override;
+
+	UFUNCTION(NetMulticast,Reliable,BlueprintCallable)
+	virtual void Multicast_HandleDeath();
+
 
 protected:
 	
@@ -48,6 +53,14 @@ protected:
 	virtual void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClass,float Level);
 
 	void AddCharacterAbilities();
+
+	void Disolve();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void StartDisolveTimeline(UMaterialInstanceDynamic* DynamicMaterialInstance);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void StartWeaponDisolveTimeline(UMaterialInstanceDynamic* DynamicMaterialInstance);
 	
 	UPROPERTY(EditAnywhere,Category=Combat)
 	TObjectPtr<USkeletalMeshComponent> Weapon;
@@ -75,5 +88,11 @@ protected:
 
 	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	UAnimMontage* HitReactMontage;
+
+	UPROPERTY(EditAnywhere,BlueprintReadOnly)
+	UMaterialInstance* DissolveMaterialInstance;
+
+	UPROPERTY(EditAnywhere,BlueprintReadOnly)
+	UMaterialInstance* WeaponDissolveMaterialInstance;
 
 };

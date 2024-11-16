@@ -6,6 +6,7 @@
 #include "Net/UnrealNetwork.h"
 #include"GameplayEffectExtension.h"
 #include "Aura/AuraGameplayTags.h"
+#include "Aura/Interfaces/CombatInterface.h"
 #include "GameFramework/Character.h"
 #include "Kismet/KismetSystemLibrary.h"
 
@@ -142,6 +143,20 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 		const float NewHealth = GetHealth() - LocalIncomingDamage;
 		SetHealth(FMath::Clamp(NewHealth,0,GetMaxHealth()));
 		const bool bFatal = NewHealth <= 0;
+
+		if(!bFatal)
+		{
+			FGameplayTagContainer TagContainer;
+			TagContainer.AddTag(FAuraGameplayTags::Get().Effects_HitReact);
+			EffectProperties.TargetASC->TryActivateAbilitiesByTag(TagContainer);
+		}
+
+		else
+		{
+			ICombatInterface* Interface = Cast<ICombatInterface>(EffectProperties.TargetAvatarActor);
+			if(!Interface) return;
+			ICombatInterface::Execute_Die(EffectProperties.TargetAvatarActor);
+		}
 	}
 }
 

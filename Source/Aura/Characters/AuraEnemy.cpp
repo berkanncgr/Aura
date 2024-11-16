@@ -43,6 +43,12 @@ void AAuraEnemy::HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCou
 	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0 : BaseWalkSpeed;
 }
 
+void AAuraEnemy::Die_Implementation()
+{
+	SetLifeSpan(5);
+	Super::Die_Implementation();
+}
+
 void AAuraEnemy::InitAbilityActorInfo()
 {
 	AbilitySystemComponent->InitAbilityActorInfo(this,this);
@@ -50,6 +56,7 @@ void AAuraEnemy::InitAbilityActorInfo()
 	AAS->AbilityActorInfoSet();
 
 	InitializeDefaultAttributes();
+	UAuraAbilitySystemLibrary::GiveStartupAbilities(this,AbilitySystemComponent);
 }
 
 void AAuraEnemy::InitializeDefaultAttributes()

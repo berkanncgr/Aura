@@ -29,7 +29,7 @@ public:
 	FORCEINLINE virtual ECharacterClass GetCharacterClass() const override { return CharacterClass; }
 
 	void HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
-
+	virtual void Die_Implementation() override;
 	
 	
 protected:

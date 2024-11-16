@@ -70,3 +70,17 @@ void UAuraAbilitySystemLibrary::InitializeDefaultAttributes(UObject* WorldContex
 	const FGameplayEffectSpecHandle VitalSpecHandle =  ASC->MakeOutgoingSpec(ClassInfo->VitalAttributes,Level,VitalContextHandle);
 	ASC->ApplyGameplayEffectSpecToSelf(*VitalSpecHandle.Data.Get());
 }
+
+void UAuraAbilitySystemLibrary::GiveStartupAbilities(UObject* WorldContextObject,UAbilitySystemComponent* ASC)
+{
+	AAuraGameModeBase* GM = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
+	if(!GM) return;
+	
+	UCharacterClassInfoDataAsset* ClassInfo = GM->CharacterClassInfo;
+
+	for(auto AbilityClass : ClassInfo->CommonAbilities)
+	{
+		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass,1);
+		ASC->GiveAbility(AbilitySpec);
+	}
+}
