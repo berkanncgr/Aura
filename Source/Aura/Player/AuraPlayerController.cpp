@@ -7,17 +7,32 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "Aura/AuraGameplayTags.h"
 #include "EnhancedInputSubsystems.h"
+#include "MovieSceneTracksComponentTypes.h"
 #include "NavigationPath.h"
 #include "NavigationSystem.h"
 #include "Aura/AbilitySystem/AuraAbilitySystemComponent.h"
 #include "Components/SplineComponent.h"
 #include "Aura/Input/AuraInputComponent.h"
 #include "Aura/Interfaces/EnemyInterface.h"
+#include "Aura/UI/Widgets/DamageTextWidgetComponent.h"
+#include "GameFramework/Character.h"
 
 AAuraPlayerController::AAuraPlayerController()
 {
 	bReplicates = true;
 	Spline = CreateDefaultSubobject<USplineComponent>("Spline");
+}
+
+void AAuraPlayerController::Client_ShowDamageNumber_Implementation(float DamageAmount, ACharacter* TargetCharacter)
+{
+	if(!DamageTextComponentClass) return;
+	if(!IsValid(TargetCharacter)) return; // IsValid also checks that if parameter is pending kill.
+
+	UDamageTextWidgetComponent* DamageText = NewObject<UDamageTextWidgetComponent>(TargetCharacter,DamageTextComponentClass);
+	DamageText->RegisterComponent();
+	DamageText->AttachToComponent(TargetCharacter->GetRootComponent(),FAttachmentTransformRules::KeepRelativeTransform);
+	DamageText->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+	DamageText->SetDamageText(DamageAmount);
 }
 
 void AAuraPlayerController::PlayerTick(float DeltaTime)

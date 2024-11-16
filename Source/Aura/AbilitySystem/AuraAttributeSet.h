@@ -206,6 +206,8 @@ protected:
 private:
 
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props);
+
+	void IncomingDamgeChanged(const FEffectProperties& EffectProperties);
 	
 	
 };

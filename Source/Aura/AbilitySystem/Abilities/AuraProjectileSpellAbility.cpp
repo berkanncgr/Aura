@@ -75,7 +75,5 @@ void UAuraProjectileSpellAbility::SpawnProjectile(const FVector& ProjectileTarge
 	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle,FAuraGameplayTags::Get().Damage,Damage.GetValueAtLevel(GetAbilityLevel()));
 	Projectile->DamageEffectSpecHandle = SpecHandle;
 	
-
-
 	Projectile->FinishSpawning(SpawnTransform);
 }
