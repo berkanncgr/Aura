@@ -55,12 +55,12 @@ void UAuraAbilitySystemLibrary::InitializeDefaultAttributes(UObject* WorldContex
 	UCharacterClassInfoDataAsset* ClassInfo = GM->CharacterClassInfo;
 	FCharacterClassDefaultInfo ClassDefaultInfo = ClassInfo->GetClassDefaultInfo(CharacterClass);
 
-	FGameplayEffectContextHandle PrimaryContextHandle =  ASC->MakeEffectContext();
+	FGameplayEffectContextHandle PrimaryContextHandle = ASC->MakeEffectContext();
 	PrimaryContextHandle.AddSourceObject(AvatarActor);
-	const FGameplayEffectSpecHandle PrimarySpecHandle =  ASC->MakeOutgoingSpec(ClassDefaultInfo.PrimaryAttributes,Level,PrimaryContextHandle);
+	const FGameplayEffectSpecHandle PrimarySpecHandle = ASC->MakeOutgoingSpec(ClassDefaultInfo.PrimaryAttributes,Level,PrimaryContextHandle);
 	ASC->ApplyGameplayEffectSpecToSelf(*PrimarySpecHandle.Data.Get());
 
-	FGameplayEffectContextHandle SecondaryContextHandle =  ASC->MakeEffectContext();
+	FGameplayEffectContextHandle SecondaryContextHandle = ASC->MakeEffectContext();
 	SecondaryContextHandle.AddSourceObject(AvatarActor);
 	const FGameplayEffectSpecHandle SecondarySpecHandle =  ASC->MakeOutgoingSpec(ClassInfo->SecondaryAttributes,Level,SecondaryContextHandle);
 	ASC->ApplyGameplayEffectSpecToSelf(*SecondarySpecHandle.Data.Get());
