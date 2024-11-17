@@ -8,6 +8,7 @@
 #include "Aura/Player/AuraPlayerState.h"
 #include "Aura/UI/HUD/AuraHUD.h"
 #include "Aura/UI/WidgetControllers/AuraWidgetController.h"
+#include "Data/CharacterClassInfoDataAsset.h"
 #include "Kismet/GameplayStatics.h"
 
 UOverlayWidgetController* UAuraAbilitySystemLibrary::GetOverlayWidgetController(const UObject* WorldContextObject)
@@ -83,4 +84,20 @@ void UAuraAbilitySystemLibrary::GiveStartupAbilities(UObject* WorldContextObject
 		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass,1);
 		ASC->GiveAbility(AbilitySpec);
 	}
+}
+
+UCharacterClassInfoDataAsset* UAuraAbilitySystemLibrary::GetCharacterClassInfoDataAsset(const UObject* WorldContextObject)
+{
+	AAuraGameModeBase* GM = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
+	if(!GM) return nullptr;
+
+	return GM->CharacterClassInfo;
+}
+
+UCurveTable* UAuraAbilitySystemLibrary::GetDamageCoefficientsCurve(const UObject* WorldContextObject)
+{
+	AAuraGameModeBase* GM = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
+	if(!GM) return nullptr;
+
+	return GM->CharacterClassInfo->DamageCalculationCoefficients;
 }

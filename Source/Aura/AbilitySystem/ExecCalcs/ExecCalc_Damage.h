@@ -20,5 +20,5 @@ public:
 	virtual void Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams, FGameplayEffectCustomExecutionOutput& OutExecutionOutput) const override;
 
 	UPROPERTY(EditAnywhere,BlueprintReadOnly)
-	bool bUseStaticAttributeCapture = false;
+	bool bUseStaticAttributeCapture = true;
 };

@@ -47,4 +47,7 @@ public:
 
 	FORCEINLINE	FCharacterClassDefaultInfo GetClassDefaultInfo(const ECharacterClass& CharacterClass) const
 	{ return CharacterClassInformation.FindChecked(CharacterClass); }
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UCurveTable* DamageCalculationCoefficients;
 };

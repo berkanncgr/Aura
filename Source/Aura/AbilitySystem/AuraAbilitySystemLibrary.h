@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Data/CharacterClassInfoDataAsset.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "AuraAbilitySystemLibrary.generated.h"
 
@@ -11,6 +10,8 @@ class UAbilitySystemComponent;
 class UAttributeMeunWidgetController;
 class UAuraUserWidget;
 class UOverlayWidgetController;
+class UCharacterClassInfoDataAsset;
+
 /**
  * 
  */
@@ -32,4 +33,10 @@ class AURA_API UAuraAbilitySystemLibrary : public UBlueprintFunctionLibrary
 
 	UFUNCTION(BlueprintCallable)
 	static void GiveStartupAbilities(UObject* WorldContextObject, UAbilitySystemComponent* ASC);
+
+	UFUNCTION(BlueprintCallable)
+	static UCharacterClassInfoDataAsset* GetCharacterClassInfoDataAsset(const UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintCallable)
+	static UCurveTable* GetDamageCoefficientsCurve(const UObject* WorldContextObject);
 };
