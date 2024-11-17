@@ -45,7 +45,6 @@ void AAuraPlayerController::PlayerTick(float DeltaTime)
 void AAuraPlayerController::AutoRun()
 {
 	if (!bAutoRunning) return;
-
 	if(!GetPawn()) return;
 	
 	const FVector LocationOnSpline = Spline->FindLocationClosestToWorldLocation(GetPawn()->GetActorLocation(), ESplineCoordinateSpace::World);

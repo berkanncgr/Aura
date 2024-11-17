@@ -76,8 +76,6 @@ public:
 	
 	// Much better syntax: 
 	TMap<FGameplayTag, FGameplayAttribute(*)()> TagsToAttributesMap;
-
-
 	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,ReplicatedUsing=OnRep_Health)
 	FGameplayAttributeData Health;
