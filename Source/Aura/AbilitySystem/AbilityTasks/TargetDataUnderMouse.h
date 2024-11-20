@@ -27,6 +27,10 @@ public:
 
 private:
 
+	void Test();
+
+	UFUNCTION()
+	void TestFunction();
 
 	
 	void SendMouseCursorData();

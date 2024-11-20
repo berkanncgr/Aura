@@ -10,6 +10,8 @@ UTargetDataUnderMouse* UTargetDataUnderMouse::CreateTargetDataUnderMouse(UGamepl
 {
 	UTargetDataUnderMouse* Obj = NewAbilityTask<UTargetDataUnderMouse>(OwningAbility);
 	return Obj;
+
+	// What happens if we call Activate() here?
 }
 
 
@@ -28,11 +30,22 @@ void UTargetDataUnderMouse::Activate()
 		const FPredictionKey PredictionKey = GetActivationPredictionKey();
 		AbilitySystemComponent.Get()->AbilityTargetDataSetDelegate(SpecHandle,PredictionKey).AddUObject(this,&ThisClass::OnTargetDataReplicationCallback);
 		const bool bCalledDelegate = AbilitySystemComponent.Get()->CallReplicatedTargetDataDelegatesIfSet(SpecHandle,PredictionKey);
-
 		if(!bCalledDelegate) SetWaitingOnRemotePlayerData();
 	}
+
+	
 }
 
+void UTargetDataUnderMouse::Test()
+{
+	FTimerHandle TimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle,this,&ThisClass::TestFunction,0.016,true);
+}
+
+void UTargetDataUnderMouse::TestFunction()
+{
+	UKismetSystemLibrary::PrintString(GetWorld(),TEXT("Test Function"),1,1,FColor::Red,0.016);
+}
 
 
 void UTargetDataUnderMouse::SendMouseCursorData()

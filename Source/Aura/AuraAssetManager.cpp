@@ -18,7 +18,7 @@ void UAuraAssetManager::StartInitialLoading()
 
 	FAuraGameplayTags::InitialieNativeGameplayTags();
 
-	// If we want to use target data, THIS IS BRUTAL:
+	// If we want to use target data, THIS IS BRUTAL: (Client broadcast the delegate and Server gets it!)
 	UAbilitySystemGlobals::Get().InitGlobalData();
 	
 }
