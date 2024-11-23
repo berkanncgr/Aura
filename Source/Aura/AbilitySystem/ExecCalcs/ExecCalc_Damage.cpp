@@ -65,9 +65,9 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 
 	// Get Damage Set by Caller Magnitude: Damage amount from CT, we captured with correct tag.
 	float Damage = 0;
-	for(FGameplayTag DamageTypeTag : FAuraGameplayTags::Get().DamageTypes)
+	for(const TTuple<FGameplayTag,FGameplayTag>& Pair : FAuraGameplayTags::Get().DamageTypesToResistances)
 	{
-		const float DamageTypeValue =  EffectSpec.GetSetByCallerMagnitude(DamageTypeTag,false);
+		const float DamageTypeValue =  EffectSpec.GetSetByCallerMagnitude(Pair.Key,false);
 		Damage+=DamageTypeValue;
 	}
 
