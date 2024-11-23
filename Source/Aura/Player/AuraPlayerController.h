@@ -25,7 +25,7 @@ public:
 	AAuraPlayerController();
 
 	UFUNCTION(Client,Reliable)
-	void Client_ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter);
+	void Client_ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter, bool bIsThereBlockedHit, bool bIsThereCriticalHit);
 	
 protected:
 

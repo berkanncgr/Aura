@@ -204,8 +204,9 @@ protected:
 private:
 
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props);
-
-	void IncomingDamgeChanged(const FEffectProperties& EffectProperties);
 	
+	void IncomingDamgeChanged(const FEffectProperties& EffectProperties);
+
+	void ShowFloatingText(const FEffectProperties& Props, float Damage, bool bIsThereBlockedHit,bool bIsThereCriticalHit);
 	
 };

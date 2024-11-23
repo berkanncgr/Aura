@@ -3,6 +3,7 @@
 
 #include "AuraAttributeSet.h"
 #include "AbilitySystemBlueprintLibrary.h"
+#include "AuraAbilitySystemLibrary.h"
 #include "Net/UnrealNetwork.h"
 #include"GameplayEffectExtension.h"
 #include "Aura/AuraGameplayTags.h"
@@ -160,11 +161,18 @@ void UAuraAttributeSet::IncomingDamgeChanged(const FEffectProperties& EffectProp
 		if(!Interface) return;
 		ICombatInterface::Execute_Die(EffectProperties.TargetAvatarActor);
 	}
+	
+	bool bBlock = UAuraAbilitySystemLibrary::IsBlockedHit(EffectProperties.EffectContextHandle);
+	bool bCriticalHit = UAuraAbilitySystemLibrary::IsCriticalHit(EffectProperties.EffectContextHandle);
+	ShowFloatingText(EffectProperties,LocalIncomingDamage,bBlock,bCriticalHit);
+}
 
-	if(EffectProperties.SourceCharacter == EffectProperties.TargetCharacter) return;
-	AAuraPlayerController* PC = Cast<AAuraPlayerController>(EffectProperties.SourceCharacter->Controller);
+void UAuraAttributeSet::ShowFloatingText(const FEffectProperties& Props, float Damage, bool bIsThereBlockedHit, bool bIsThereCriticalHit)
+{
+	if(Props.SourceCharacter == Props.TargetCharacter) return;
+	AAuraPlayerController* PC = Cast<AAuraPlayerController>(Props.SourceCharacter->Controller);
 	if(!PC) return;
-	PC->Client_ShowDamageNumber(LocalIncomingDamage,EffectProperties.TargetCharacter);
+	PC->Client_ShowDamageNumber(Damage,Props.TargetCharacter,bIsThereBlockedHit,bIsThereCriticalHit);
 }
 
 

@@ -23,7 +23,7 @@ AAuraPlayerController::AAuraPlayerController()
 	Spline = CreateDefaultSubobject<USplineComponent>("Spline");
 }
 
-void AAuraPlayerController::Client_ShowDamageNumber_Implementation(float DamageAmount, ACharacter* TargetCharacter)
+void AAuraPlayerController::Client_ShowDamageNumber_Implementation(float DamageAmount, ACharacter* TargetCharacter, bool bIsThereBlockedHit, bool bIsThereCriticalHit)
 {
 	if(!DamageTextComponentClass) return;
 	if(!IsValid(TargetCharacter)) return; // IsValid also checks that if parameter is pending kill.
@@ -32,7 +32,7 @@ void AAuraPlayerController::Client_ShowDamageNumber_Implementation(float DamageA
 	DamageText->RegisterComponent();
 	DamageText->AttachToComponent(TargetCharacter->GetRootComponent(),FAttachmentTransformRules::KeepRelativeTransform);
 	DamageText->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
-	DamageText->SetDamageText(DamageAmount);
+	DamageText->SetDamageText(DamageAmount,bIsThereBlockedHit,bIsThereCriticalHit);
 }
 
 void AAuraPlayerController::PlayerTick(float DeltaTime)

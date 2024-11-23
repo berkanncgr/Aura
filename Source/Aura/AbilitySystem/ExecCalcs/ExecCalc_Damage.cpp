@@ -1,6 +1,7 @@
 
 #include "Aura/AbilitySystem/ExecCalcs/ExecCalc_Damage.h"
 #include "AbilitySystemComponent.h"
+#include "Aura/AuraAbilityTypes.h"
 #include "Aura/AuraGameplayTags.h"
 #include "Aura/AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "Aura/AbilitySystem/AuraAttributeSet.h"
@@ -76,7 +77,6 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().CriticalHitChanceDef,EvaluateParams,SourceCriticalHitChance);
 		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().CriticalHitResistanceDef,EvaluateParams,TargetCriticalHitResistance);
 		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().CriticalHitDamageDef,EvaluateParams,SourceCriticalHitDamage);
-
 	}
 
 	else  // Actually we can access the attributes like down below. Why we tried capture attributes? (Maybe tag dependent calculations)
@@ -96,6 +96,9 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	const bool bIsBlocked = FMath::RandRange(1,100) < TargetBlockChance;
 	if(bIsBlocked) Damage /= 2;
 
+	FGameplayEffectContextHandle ContextHandle =  EffectSpec.GetContext();
+	UAuraAbilitySystemLibrary::SetIsBlockedHit(ContextHandle,bIsBlocked);
+
 	// ArmorPenetration ignores percentage of Target's Armor
 	UCurveTable* DamageCoefficientsTable = UAuraAbilitySystemLibrary::GetDamageCoefficientsCurve(SourceCombatInterface->_getUObject());
 	const FRealCurve* ArmorPenetrationCurve = DamageCoefficientsTable->FindCurve(FName("ArmorPenetration"),"");
@@ -107,11 +110,12 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	Damage *= (100- EffectiveArmor * EffectiveArmorCoefficient) / 100;
 	
 	UCurveTable* CriticalHitCoefficientsTable = UAuraAbilitySystemLibrary::GetDamageCoefficientsCurve(SourceCombatInterface->_getUObject());
-	const FRealCurve* CriticalHitCurve = CriticalHitCoefficientsTable->FindCurve(FName("CriticalHit"),"");
+	const FRealCurve* CriticalHitCurve = CriticalHitCoefficientsTable->FindCurve(FName("CriticalHitResistance"),"");
 	float CriticalHitCoefficient = CriticalHitCurve->Eval(SourceCombatInterface->GetPlayerLevel());
 	const float EffectiveCriticalHitChance = SourceCriticalHitChance - TargetCriticalHitResistance * CriticalHitCoefficient;
 	const bool bCriticalHit = FMath::RandRange(1,100) < EffectiveCriticalHitChance;
 	Damage = bCriticalHit ? Damage*2 + SourceCriticalHitDamage : Damage;
+	UAuraAbilitySystemLibrary::SetIsCriticalHit(ContextHandle,bCriticalHit);
 	
 	const FGameplayModifierEvaluatedData EvaluatedData (UAuraAttributeSet::GetIncomingDamageAttribute(),EGameplayModOp::Additive,Damage);
 	OutExecutionOutput.AddOutputModifier(EvaluatedData);
