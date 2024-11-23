@@ -51,7 +51,7 @@ struct AuraDamageStatics
 };
 
 // Everytime we call this function, we get the same object because it is static.  !!! Return value does not go away when the function ends !!!!
-static const AuraDamageStatics& DamageStatics()
+static const AuraDamageStatics& GetDamageStatics()
 {
 	static AuraDamageStatics DamageStatics;
 	return DamageStatics;
@@ -60,15 +60,15 @@ static const AuraDamageStatics& DamageStatics()
 UExecCalc_Damage::UExecCalc_Damage()
 {
 	// ArmorDef came from MACRO In AuraDamageStatics Struct. :)
-	RelevantAttributesToCapture.Add(DamageStatics().ArmorDef);
-	RelevantAttributesToCapture.Add(DamageStatics().ArmorPenetrationDef);
-	RelevantAttributesToCapture.Add(DamageStatics().BlockChanceDef);
-	RelevantAttributesToCapture.Add(DamageStatics().CriticalHitChanceDef);
-	RelevantAttributesToCapture.Add(DamageStatics().CriticalHitResistanceDef);
-	RelevantAttributesToCapture.Add(DamageStatics().ArcaneResistanceDef);
-	RelevantAttributesToCapture.Add(DamageStatics().FireResistanceDef);
-	RelevantAttributesToCapture.Add(DamageStatics().LightningResistanceDef);
-	RelevantAttributesToCapture.Add(DamageStatics().PhysicalResistanceDef);
+	RelevantAttributesToCapture.Add(GetDamageStatics().ArmorDef);
+	RelevantAttributesToCapture.Add(GetDamageStatics().ArmorPenetrationDef);
+	RelevantAttributesToCapture.Add(GetDamageStatics().BlockChanceDef);
+	RelevantAttributesToCapture.Add(GetDamageStatics().CriticalHitChanceDef);
+	RelevantAttributesToCapture.Add(GetDamageStatics().CriticalHitResistanceDef);
+	RelevantAttributesToCapture.Add(GetDamageStatics().ArcaneResistanceDef);
+	RelevantAttributesToCapture.Add(GetDamageStatics().FireResistanceDef);
+	RelevantAttributesToCapture.Add(GetDamageStatics().LightningResistanceDef);
+	RelevantAttributesToCapture.Add(GetDamageStatics().PhysicalResistanceDef);
 
 }
 
@@ -95,7 +95,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 		const FGameplayTag DamageType = Pair.Key;
 		const FGameplayTag ResistanceTag = Pair.Value;
 		checkf(AuraDamageStatics().TagsToCaptureDefs.Contains(ResistanceTag),TEXT("TagsToCaptureDef does NOT contain Tag [%s] in ExecCalc_Damage"),*ResistanceTag.ToString());
-		const FGameplayEffectAttributeCaptureDefinition CaptureDef = AuraDamageStatics().TagsToCaptureDefs[ResistanceTag];
+		const FGameplayEffectAttributeCaptureDefinition CaptureDef = AuraDamageStatics().TagsToCaptureDefs[ResistanceTag]; // Everytime we constructing it. If I use GetDamageStatics(), it crashes :/
 
 		float Resistance = 0.f;
 		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(CaptureDef,EvaluateParams,Resistance);
@@ -111,12 +111,12 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	
 	if(bUseStaticAttributeCapture)
 	{
-		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().BlockChanceDef,EvaluateParams,TargetBlockChance);
-		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().ArmorDef,EvaluateParams,TargetArmor);
-		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().ArmorPenetrationDef,EvaluateParams,SourceArmorPenetration);
-		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().CriticalHitChanceDef,EvaluateParams,SourceCriticalHitChance);
-		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().CriticalHitResistanceDef,EvaluateParams,TargetCriticalHitResistance);
-		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().CriticalHitDamageDef,EvaluateParams,SourceCriticalHitDamage);
+		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(GetDamageStatics().BlockChanceDef,EvaluateParams,TargetBlockChance);
+		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(GetDamageStatics().ArmorDef,EvaluateParams,TargetArmor);
+		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(GetDamageStatics().ArmorPenetrationDef,EvaluateParams,SourceArmorPenetration);
+		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(GetDamageStatics().CriticalHitChanceDef,EvaluateParams,SourceCriticalHitChance);
+		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(GetDamageStatics().CriticalHitResistanceDef,EvaluateParams,TargetCriticalHitResistance);
+		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(GetDamageStatics().CriticalHitDamageDef,EvaluateParams,SourceCriticalHitDamage);
 	}
 
 	else  // Actually we can access the attributes like down below. Why we tried capture attributes? (Maybe tag dependent calculations)
