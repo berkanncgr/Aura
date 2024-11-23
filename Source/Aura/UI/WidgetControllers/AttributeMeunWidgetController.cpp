@@ -14,7 +14,7 @@ void UAttributeMeunWidgetController::BindCallbacksToDependencies()
 	for(auto& Pair : AS->TagsToAttributesMap)
 	{
 		FGameplayAttribute Attribute = Pair.Value();
-		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attribute).AddLambda( [this,Pair, AS](const FOnAttributeChangeData& Data)
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attribute).AddLambda( [this,Pair](const FOnAttributeChangeData& Data)
 		{
 			BroadcastAttributeInfo(Pair.Key,Pair.Value());
 		});
