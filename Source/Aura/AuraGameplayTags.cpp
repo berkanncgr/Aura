@@ -38,7 +38,14 @@ void FAuraGameplayTags::InitialieNativeGameplayTags()
 	// Events:
 	GameplayTags.Event_Montage_FireBolt = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Event.Montage.FireBolt"),("AM_Cast_FireBolt Montage Anim Notify"));
 
+	// Damage
 	GameplayTags.Damage = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Damage"),("Damage"));
+	GameplayTags.Damage_Fire = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Damage.Fire"),("Damage Type Fire"));
+	GameplayTags.Damage_Physical = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Damage.Physical"),("Damage Type Physical"));
+
+
 
 	GameplayTags.Effects_HitReact = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Effects.HitReact"),("When damage is taken"));
+
+	GameplayTags.DamageTypes = {GameplayTags.Damage_Fire};
 }

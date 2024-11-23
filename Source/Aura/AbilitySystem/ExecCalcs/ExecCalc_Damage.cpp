@@ -64,7 +64,12 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	EvaluateParams.TargetTags = TargetTags;
 
 	// Get Damage Set by Caller Magnitude: Damage amount from CT, we captured with correct tag.
-	float Damage = EffectSpec.GetSetByCallerMagnitude(FAuraGameplayTags::Get().Damage,false);
+	float Damage = 0;
+	for(FGameplayTag DamageTypeTag : FAuraGameplayTags::Get().DamageTypes)
+	{
+		const float DamageTypeValue =  EffectSpec.GetSetByCallerMagnitude(DamageTypeTag,false);
+		Damage+=DamageTypeValue;
+	}
 
 	// We captured any attribute we want from who we want to give damage (Target).
 	float TargetBlockChance = 0, TargetArmor = 0, SourceArmorPenetration = 0, SourceCriticalHitChance = 0, TargetCriticalHitResistance = 0, SourceCriticalHitDamage = 0;

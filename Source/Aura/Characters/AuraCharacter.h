@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AuraCharacterBase.h"
+#include "GameplayTagContainer.h"
 #include "AuraCharacter.generated.h"
 
 /**
@@ -26,8 +27,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetFacingTarget(FVector FacingTarget);
 
-
-	
 protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)

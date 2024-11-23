@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Aura/AbilitySystem/Abilities/AuraGameplayAbility.h"
+#include "AuraDamageGameplayAbility.h"
 #include "AuraProjectileSpellAbility.generated.h"
 
 
 class AAuraProjectile;
 
 UCLASS()
-class AURA_API UAuraProjectileSpellAbility : public UAuraGameplayAbility
+class AURA_API UAuraProjectileSpellAbility : public UAuraDamageGameplayAbility
 {
 	GENERATED_BODY()
 
@@ -40,7 +40,4 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	UAnimMontage* ProjectileMontage;
-
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<UGameplayEffect> ProjectileDamageEffectClass;	
 };

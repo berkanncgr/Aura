@@ -49,7 +49,6 @@ void UAuraAttributeSet::OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHeal
 
 void UAuraAttributeSet::OnRep_Mana(const FGameplayAttributeData& OldMana)
 {
-	UKismetSystemLibrary::PrintString(GetWorld(),FString::Printf(TEXT(" %s New Mana: %f"),*GetOwningActor()->GetName(),GetMana()),1,1,FColor::Purple,10);
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UAuraAttributeSet,Mana,OldMana);
 }
 

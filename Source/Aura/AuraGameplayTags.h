@@ -46,9 +46,13 @@ public:
 	FGameplayTag Event_Montage_FireBolt;
 
 	FGameplayTag Damage;
+	FGameplayTag Damage_Fire;
+	FGameplayTag Damage_Physical;
+	
 
 	FGameplayTag Effects_HitReact;
 	
+	TArray<FGameplayTag> DamageTypes;
 
 private:
 
