@@ -67,7 +67,7 @@ void UAuraAbilitySystemLibrary::InitializeDefaultAttributes(UObject* WorldContex
 	const FGameplayEffectSpecHandle SecondarySpecHandle =  ASC->MakeOutgoingSpec(ClassInfo->SecondaryAttributes,Level,SecondaryContextHandle);
 	ASC->ApplyGameplayEffectSpecToSelf(*SecondarySpecHandle.Data.Get());
 
-	FGameplayEffectContextHandle VitalContextHandle =  ASC->MakeEffectContext();
+	FGameplayEffectContextHandle VitalContextHandle = ASC->MakeEffectContext();
 	VitalContextHandle.AddSourceObject(AvatarActor);
 	const FGameplayEffectSpecHandle VitalSpecHandle =  ASC->MakeOutgoingSpec(ClassInfo->VitalAttributes,Level,VitalContextHandle);
 	ASC->ApplyGameplayEffectSpecToSelf(*VitalSpecHandle.Data.Get());
