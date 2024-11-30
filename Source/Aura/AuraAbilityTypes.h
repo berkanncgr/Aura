@@ -14,9 +14,21 @@ struct FAuraGameplayEffectContext : public FGameplayEffectContext
 		return StaticStruct();
 	}
 
+	/** Creates a copy of this context, used to duplicate for later modifications */
+	virtual FAuraGameplayEffectContext* Duplicate() const
+	{
+		FAuraGameplayEffectContext* NewContext = new FAuraGameplayEffectContext();
+		*NewContext = *this;
+		if (GetHitResult())
+		{
+			// Does a deep copy of the hit result
+			NewContext->AddHitResult(*GetHitResult(), true);
+		}
+		return NewContext;
+	}
+
 	virtual bool NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bOutSuccess) override;
-
-
+	
 	bool GetIsCriticalHit() const { return bIsCriticalHit; }
 	bool GetIsBlockedHit() const { return bIsBlockedHit; }
 
