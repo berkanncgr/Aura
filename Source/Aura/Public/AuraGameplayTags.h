@@ -54,6 +54,12 @@ public:
 	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistances;
 
 	FGameplayTag Effects_HitReact;
+
+	FGameplayTag Abilities_Attack;
+	FGameplayTag Abilities_Attack_Melee;
+	FGameplayTag Abilities_Attack_Range;
+	
+	
 private:
     static FAuraGameplayTags GameplayTags;
 };
