@@ -29,6 +29,7 @@ public:
 
 	UFUNCTION(NetMulticast, Reliable)
 	virtual void MulticastHandleDeath();
+	
 protected:
 	virtual void BeginPlay() override;
 
@@ -39,6 +40,8 @@ protected:
 	FName WeaponTipSocketName;
 
 	virtual FVector GetCombatSocketLocation_Implementation() override;
+	virtual bool IsDead_Implementation() const override;
+	virtual AActor* GetAvatar_Implementation() override;
 
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
@@ -77,6 +80,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TObjectPtr<UMaterialInstance> WeaponDissolveMaterialInstance;
+
+	bool bDead = false;
+	
 private:
 
 	UPROPERTY(EditAnywhere, Category = "Abilities")
