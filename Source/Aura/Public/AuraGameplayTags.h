@@ -58,8 +58,12 @@ public:
 	FGameplayTag Abilities_Attack;
 	FGameplayTag Abilities_Attack_Melee;
 	FGameplayTag Abilities_Attack_Range;
-	
-	
+
+	FGameplayTag Montage_Attack_Weapon;
+	FGameplayTag Montage_Attack_RightHand;
+	FGameplayTag Montage_Attack_LeftHand;
+
+
 private:
     static FAuraGameplayTags GameplayTags;
 };
