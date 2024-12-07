@@ -24,22 +24,25 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
-	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
-	virtual void Die() override;
+	/** Combat Interface */
+	virtual UAnimMontage* GetHitReactMontage_Implementation() override;	
+	virtual void Die() override;	
+	virtual FVector GetCombatSocketLocation_Implementation(const FGameplayTag& MontageTag) override;
+	virtual bool IsDead_Implementation() const override;
+	virtual AActor* GetAvatar_Implementation() override;
+	virtual TArray<FTaggedMontage> GetAttackMontages_Implementation() override;
+	/** end Combat Interface */
 
 	UFUNCTION(NetMulticast, Reliable)
 	virtual void MulticastHandleDeath();
 
-	FORCEINLINE virtual TArray<FTaggedMontage> GetTaggedMontages_Implementation() override
-	{ return AttackMontages; }
-
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Combat")
 	TArray<FTaggedMontage> AttackMontages;
 	
 protected:
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere, Category = "Combat")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
 	TObjectPtr<USkeletalMeshComponent> Weapon;
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
@@ -51,9 +54,7 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	FName RightHandSocketName;
 
-	virtual FVector GetCombatSocketLocation_Implementation(const FGameplayTag& MontageTag) override;
-	virtual bool IsDead_Implementation() const override;
-	virtual AActor* GetAvatar_Implementation() override;
+	bool bDead = false;
 
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
@@ -92,9 +93,6 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TObjectPtr<UMaterialInstance> WeaponDissolveMaterialInstance;
-
-	bool bDead = false;
-	
 private:
 
 	UPROPERTY(EditAnywhere, Category = "Abilities")

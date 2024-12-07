@@ -61,12 +61,25 @@ void AAuraEnemy::UnHighlightActor()
 	Weapon->SetRenderCustomDepth(false);
 }
 
-
+int32 AAuraEnemy::GetPlayerLevel()
+{
+	return Level;
+}
 
 void AAuraEnemy::Die()
 {
 	SetLifeSpan(LifeSpan);
 	Super::Die();
+}
+
+void AAuraEnemy::SetCombatTarget_Implementation(AActor* InCombatTarget)
+{
+	CombatTarget = InCombatTarget;
+}
+
+AActor* AAuraEnemy::GetCombatTarget_Implementation() const
+{
+	return CombatTarget;
 }
 
 void AAuraEnemy::BeginPlay()
@@ -76,7 +89,7 @@ void AAuraEnemy::BeginPlay()
 	InitAbilityActorInfo();
 	if (HasAuthority())
 	{
-		UAuraAbilitySystemLibrary::GiveStartupAbilities(this, AbilitySystemComponent,CharacterClass);	
+		UAuraAbilitySystemLibrary::GiveStartupAbilities(this, AbilitySystemComponent, CharacterClass);	
 	}
 
 	

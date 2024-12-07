@@ -8,14 +8,22 @@
 
 void UAuraDamageGameplayAbility::CauseDamage(AActor* TargetActor)
 {
-	FGameplayEffectSpecHandle EffectSpecHande =  MakeOutgoingGameplayEffectSpec(DamageEffectClass,1);
-
-	for (TTuple<FGameplayTag,FScalableFloat> Pair : DamageTypes)
+	FGameplayEffectSpecHandle DamageSpecHandle = MakeOutgoingGameplayEffectSpec(DamageEffectClass, 1.f);
+	for (TTuple<FGameplayTag, FScalableFloat> Pair : DamageTypes)
 	{
-		const float DamageMagnitude = Pair.Value.GetValueAtLevel(GetAbilityLevel());
-		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(EffectSpecHande,Pair.Key,DamageMagnitude);
+		const float ScaledDamage = Pair.Value.GetValueAtLevel(GetAbilityLevel());
+		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(DamageSpecHandle, Pair.Key, ScaledDamage);
+	}
+	GetAbilitySystemComponentFromActorInfo()->ApplyGameplayEffectSpecToTarget(*DamageSpecHandle.Data.Get(), UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor));
+}
+
+FTaggedMontage UAuraDamageGameplayAbility::GetRandomTaggedMontageFromArray(const TArray<FTaggedMontage>& TaggedMontages) const
+{
+	if (TaggedMontages.Num() > 0)
+	{
+		const int32 Selection = FMath::RandRange(0, TaggedMontages.Num() - 1);
+		return TaggedMontages[Selection];
 	}
 
-	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
-	GetAbilitySystemComponentFromActorInfo()->ApplyGameplayEffectSpecToTarget(*EffectSpecHande.Data.Get(),TargetASC);
+	return FTaggedMontage();
 }

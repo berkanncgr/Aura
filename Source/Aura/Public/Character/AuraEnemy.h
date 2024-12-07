@@ -20,7 +20,6 @@ class AURA_API AAuraEnemy : public AAuraCharacterBase, public IEnemyInterface
 {
 	GENERATED_BODY()
 public:
-	
 	AAuraEnemy();
 	virtual void PossessedBy(AController* NewController) override;
 
@@ -30,9 +29,14 @@ public:
 	/** end Enemy Interface */
 
 	/** Combat Interface */
-	FORCEINLINE virtual int32 GetPlayerLevel() override { return Level; }
+	virtual int32 GetPlayerLevel() override;
 	virtual void Die() override;
+	virtual void SetCombatTarget_Implementation(AActor* InCombatTarget) override;
+	virtual AActor* GetCombatTarget_Implementation() const override;
 	/** end Combat Interface */
+
+	UPROPERTY(BlueprintReadWrite, Category = "Combat")
+	TObjectPtr<AActor> CombatTarget;
 
 	UPROPERTY(BlueprintAssignable)
 	FOnAttributeChangedSignature OnHealthChanged;
@@ -45,23 +49,13 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Combat")
 	bool bHitReacting = false;
 
-	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = "Combat")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
 	float BaseWalkSpeed = 250.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
 	float LifeSpan = 5.f;
-
-	UPROPERTY(BlueprintReadWrite, Category = "Combat")
-	AActor* CombatTarget;
-
-	FORCEINLINE virtual AActor* GetCombatTarget_Implementation() const override
-	{ return CombatTarget; }
-
-	FORCEINLINE virtual void SetCombatTarget_Implementation(AActor* InCombatTarget) override
-	{ CombatTarget = InCombatTarget;}
-
-protected:
 	
+protected:
 	virtual void BeginPlay() override;
 	virtual void InitAbilityActorInfo() override;
 	virtual void InitializeDefaultAttributes() const override;

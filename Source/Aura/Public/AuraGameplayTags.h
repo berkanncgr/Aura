@@ -51,19 +51,15 @@ public:
 	FGameplayTag Damage_Arcane;
 	FGameplayTag Damage_Physical;
 
-	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistances;
-
-	FGameplayTag Effects_HitReact;
-
 	FGameplayTag Abilities_Attack;
-	FGameplayTag Abilities_Attack_Melee;
-	FGameplayTag Abilities_Attack_Range;
 
 	FGameplayTag Montage_Attack_Weapon;
 	FGameplayTag Montage_Attack_RightHand;
 	FGameplayTag Montage_Attack_LeftHand;
 
+	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistances;
 
+	FGameplayTag Effects_HitReact;
 private:
     static FAuraGameplayTags GameplayTags;
 };
