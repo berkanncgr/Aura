@@ -87,3 +87,4 @@ Content/__ExternalActors__/*
 *.bkp
 *.dtmp
 
+.vsconfig
