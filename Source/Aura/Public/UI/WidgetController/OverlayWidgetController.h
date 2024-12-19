@@ -52,12 +52,15 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category="GAS|Attributes")
 	FOnAttributeChangedSignature OnMaxManaChanged;
-
+	
 	UPROPERTY(BlueprintAssignable, Category="GAS|Messages")
 	FMessageWidgetRowSignature MessageWidgetRowDelegate;
 
 	UPROPERTY(BlueprintAssignable, Category="GAS|Messages")
 	FAbilityInfoSignature AbilityInfoDelegate;
+
+	UPROPERTY(BlueprintAssignable, Category="GAS| XP")
+	FOnAttributeChangedSignature OnXPPercentChangedDelegate;
 
 protected:
 
@@ -72,6 +75,9 @@ protected:
 
 	UFUNCTION()
 	void OnInitializedStartupAbilities(class UAuraAbilitySystemComponent* AASC);
+
+	UFUNCTION()
+	void OnXPChanged(int32 NewXP);
 };
 
 template <typename T>
