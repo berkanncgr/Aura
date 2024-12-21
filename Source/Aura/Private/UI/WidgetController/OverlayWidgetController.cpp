@@ -24,6 +24,7 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 {
 	AAuraPlayerState* AuraPlayerState = Cast<AAuraPlayerState>(PlayerState);
 	AuraPlayerState->OnXPChangedDelegate.AddUObject(this,&ThisClass::OnXPChanged);
+	AuraPlayerState->OnLevelChangedDelegate.AddUObject(this,&ThisClass::OnLevelChanged);
 	
 	const UAuraAttributeSet* AuraAttributeSet = CastChecked<UAuraAttributeSet>(AttributeSet);
 
@@ -106,4 +107,9 @@ void UOverlayWidgetController::OnXPChanged(int32 NewXP)
 		const float XPBarPercent = static_cast<float>(XPForThisLevel) / static_cast<float>(DeltaLevelRequirement);
 		OnXPPercentChangedDelegate.Broadcast(XPBarPercent);
 	}
+}
+
+void UOverlayWidgetController::OnLevelChanged(int NewLevel)
+{
+	OnPlayerLevelChangeDelegate.Broadcast(NewLevel);
 }

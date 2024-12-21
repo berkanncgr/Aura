@@ -31,7 +31,11 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	class ULevelUpInfo_DataAsset* LevelUpInfo;
-	
+
+	void AddToLevel(int32 InLevel);
+	void AddToXP(int32 InXP);
+	FORCEINLINE int32 GetXP() const { return XP; }
+
 protected:
 	
 	UPROPERTY(VisibleAnywhere)
@@ -39,12 +43,6 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
-	
-	
-	
-	FORCEINLINE int32 GetXP() const { return XP; }
-	void AddToXP(int32 InXP);
-	void AddToLevel(int32 InLevel);
 	
 	void SetXP(int32 InXP);
 	void SetLevel(int32 InLevel);
