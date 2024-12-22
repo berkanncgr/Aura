@@ -217,13 +217,13 @@ void UAuraAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute,
 	
 	if (Attribute == GetMaxHealthAttribute() && bTopOffHealth)
 	{
-		SetMaxHealth(GetMaxHealth()); // This Looks ridiculous.
+		//SetMaxHealth(GetMaxHealth()); // This Looks ridiculous.
 		bTopOffHealth = false;
 	}
 
 	if (Attribute == GetMaxManaAttribute() && bTopOffMana)
 	{
-		SetMaxMana(GetMaxMana()); // This Looks ridiculous.
+		//SetMaxMana(GetMaxMana()); // This Looks ridiculous.
 		bTopOffMana = false;
 	}
 }
