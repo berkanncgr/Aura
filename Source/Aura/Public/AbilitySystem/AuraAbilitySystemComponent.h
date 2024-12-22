@@ -10,9 +10,7 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FEffectAssetTags, const FGameplayTagContaine
 DECLARE_MULTICAST_DELEGATE_OneParam(FAbilitiesGiven,class UAuraAbilitySystemComponent*);
 DECLARE_DELEGATE_OneParam(FForEachAbility,const FGameplayAbilitySpec&);
 
-/**
- * 
- */
+
 UCLASS()
 class AURA_API UAuraAbilitySystemComponent : public UAbilitySystemComponent
 {
@@ -36,6 +34,12 @@ public:
 	
 	const FGameplayTag GetAbilityTagFromSpec(const FGameplayAbilitySpec& AbilitySpec) const;
 	const FGameplayTag GetInputTagFromSpec(const FGameplayAbilitySpec& AbilitySpec) const;
+	
+	UFUNCTION(BlueprintCallable)
+	void UpgradeAttribute(const FGameplayTag& AttributeTag);
+
+	UFUNCTION(BlueprintCallable,Server,Reliable)
+	void Server_UpgradeAttribute(const FGameplayTag& AttributeTag);
 
 	
 protected:
