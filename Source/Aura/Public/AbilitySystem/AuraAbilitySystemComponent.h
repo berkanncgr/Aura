@@ -34,6 +34,7 @@ public:
 	
 	const FGameplayTag GetAbilityTagFromSpec(const FGameplayAbilitySpec& AbilitySpec) const;
 	const FGameplayTag GetInputTagFromSpec(const FGameplayAbilitySpec& AbilitySpec) const;
+	static FGameplayTag GetStatusTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 	
 	UFUNCTION(BlueprintCallable)
 	void UpgradeAttribute(const FGameplayTag& AttributeTag);
