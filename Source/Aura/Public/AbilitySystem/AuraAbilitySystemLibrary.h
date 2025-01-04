@@ -9,6 +9,7 @@
 
 class UAbilitySystemComponent;
 class UAttributeMenuWidgetController;
+class USpellMenuWidgetController;
 class UOverlayWidgetController;
 /**
  * 
@@ -22,8 +23,11 @@ public:
 	UFUNCTION(BlueprintPure, Category="AuraAbilitySystemLibrary|WidgetController")
 	static UOverlayWidgetController* GetOverlayWidgetController(const UObject* WorldContextObject);
 
-	UFUNCTION(BlueprintPure, Category="AuraAbilitySystemLibrary|WidgetController")
+	UFUNCTION(BlueprintPure, Category="AuraAbilitySystemLibrary|WidgetController",meta=(DefaultToSelf = "WorldContextObject"))
 	static UAttributeMenuWidgetController* GetAttributeMenuWidgetController(const UObject* WorldContextObject);
+	
+	UFUNCTION(BlueprintPure, Category="AuraAbilitySystemLibrary|WidgetController",meta=(DefaultToSelf = "WorldContextObject"))
+	static USpellMenuWidgetController* GetSpellMenuWidgetController(const UObject* WorldContextObject);
 
 	UFUNCTION(BlueprintCallable, Category="AuraAbilitySystemLibrary|CharacterClassDefaults")
 	static void InitializeDefaultAttributes(const UObject* WorldContextObject, ECharacterClass CharacterClass, float Level, UAbilitySystemComponent* ASC);

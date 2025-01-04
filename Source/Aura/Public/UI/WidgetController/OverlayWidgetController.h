@@ -28,7 +28,6 @@ class UAuraUserWidget;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangedSignature, float, NewValue);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMessageWidgetRowSignature, FUIWidgetRow, Row);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAbilityInfoSignature,const FAuraAbilityInfo&, AbilityInfo);
 
 /**
  * 
@@ -55,10 +54,7 @@ public:
 	
 	UPROPERTY(BlueprintAssignable, Category="GAS|Messages")
 	FMessageWidgetRowSignature MessageWidgetRowDelegate;
-
-	UPROPERTY(BlueprintAssignable, Category="GAS|Messages")
-	FAbilityInfoSignature AbilityInfoDelegate;
-
+	
 	UPROPERTY(BlueprintAssignable, Category="GAS| XP")
 	FOnAttributeChangedSignature OnXPPercentChangedDelegate;
 
@@ -69,22 +65,13 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widget Data")
 	TObjectPtr<UDataTable> MessageWidgetDataTable;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widget Data")
-	TObjectPtr<class UAbilityInfo_DataAsset> AbilityInfo;
-
+	
 	template<typename T>
 	T* GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& Tag);
-
-	UFUNCTION()
-	void OnInitializedStartupAbilities(class UAuraAbilitySystemComponent* AASC);
-
+	
 	UFUNCTION()
 	void OnXPChanged(int32 NewXP);
-
-	UFUNCTION()
-	void OnLevelChanged(int NewLevel);
-
+	
 };
 
 template <typename T>
