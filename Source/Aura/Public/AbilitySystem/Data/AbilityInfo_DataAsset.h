@@ -48,5 +48,5 @@ class AURA_API UAbilityInfo_DataAsset : public UDataAsset
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TArray<FAuraAbilityInfo> AbilityInformation;
 
-	FAuraAbilityInfo FinAbilityInfoForTag(const FGameplayTag AbilityTag, bool bWarnIfNotFound=false);
+	FAuraAbilityInfo FindAbilityInfoForTag(const FGameplayTag AbilityTag, bool bWarnIfNotFound=false);
 };

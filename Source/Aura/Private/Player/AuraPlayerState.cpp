@@ -58,7 +58,6 @@ void AAuraPlayerState::SetLevel(int32 InLevel)
 
 void AAuraPlayerState::OnRep_Level(int32 OldLevel)
 {
-	
 	OnLevelChangedDelegate.Broadcast(Level);
 }
 
