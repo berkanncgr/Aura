@@ -42,6 +42,8 @@ public:
 	static FGameplayTag GetStatusTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 
 	void UpdateAbilityStatuses(int32 Level);
+	bool GetDescriptionsByAbilityTag(const FGameplayTag& AbilityTag, FString& OutDescription,
+	                                 FString& OutNextLevelDescription);
 	FGameplayAbilitySpec* GetSpecFromAbilityTag(const FGameplayTag& AbilityTag);
 	
 	UFUNCTION(BlueprintCallable)
