@@ -9,15 +9,7 @@
 #include "Interaction/CombatInterface.h"
 #include "Aura/Public/AuraGameplayTags.h"
 
-void UAuraProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
-                                           const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
-                                           const FGameplayEventData* TriggerEventData)
-{
-	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-	
-	
-}
 
 void UAuraProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocation, const FGameplayTag& SocketTag, bool bOverridePitch, float PitchOverride)
 {

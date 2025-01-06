@@ -25,6 +25,9 @@ struct FAuraAbilityInfo
 	UPROPERTY(BlueprintReadOnly)
 	FGameplayTag StatusTag;
 
+	UPROPERTY(BlueprintReadOnly)
+	FGameplayTag AbilityType;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UTexture2D* Icon;
 

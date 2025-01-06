@@ -21,4 +21,7 @@ public:
 	virtual FString GetDescription(int32 Level);
 	virtual FString GetNextLevelDescription(int32 Level);
 	static FString GetLockedDescription(int32 Level);
+
+	float GetManaCost(float InLevel = 1.f) const;
+	float GetCooldown(float InLevel = 1.f) const;
 };

@@ -239,7 +239,10 @@ bool UAuraAbilitySystemComponent::GetDescriptionsByAbilityTag(const FGameplayTag
 	}
 	
 	UAbilityInfo_DataAsset* AbilityInfo = UAuraAbilitySystemLibrary::GetAbilityInfo(GetAvatarActor());
-	OutDescription = UAuraGameplayAbility::GetLockedDescription(AbilityInfo->FindAbilityInfoForTag(AbilityTag).LevelRequirement);
+	if (!AbilityInfo) return false; // Crash if we are client. How to get AbilityInfo if we are client? (AbilityInfo lives in GAMEMODE!!!!)
+	if (!AbilityTag.IsValid() || AbilityTag.MatchesTagExact(FAuraGameplayTags::Get().Abilities_None)) OutDescription = FString();
+	else OutDescription = UAuraGameplayAbility::GetLockedDescription(AbilityInfo->FindAbilityInfoForTag(AbilityTag).LevelRequirement);
+	
 	OutNextLevelDescription = FString();
 	return false;
 }
