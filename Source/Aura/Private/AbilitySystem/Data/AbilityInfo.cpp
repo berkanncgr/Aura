@@ -1,11 +1,11 @@
 // Copyright Druid Mechanics
 
 
-#include "AbilitySystem/Data/AbilityInfo_DataAsset.h"
+#include "AbilitySystem/Data/AbilityInfo.h"
 
 #include "Aura/AuraLogChannels.h"
 
-FAuraAbilityInfo UAbilityInfo_DataAsset::FindAbilityInfoForTag(const FGameplayTag AbilityTag, bool bWarnIfNotFound)
+FAuraAbilityInfo UAbilityInfo::FindAbilityInfoForTag(const FGameplayTag AbilityTag, bool bWarnIfNotFound)
 {
 	for (const FAuraAbilityInfo& Info : AbilityInformation)
 	{

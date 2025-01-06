@@ -5,7 +5,7 @@
 
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/AuraAttributeSet.h"
-#include "AbilitySystem/Data/AbilityInfo_DataAsset.h"
+#include "AbilitySystem/Data/AbilityInfo.h"
 #include "AbilitySystem/Data/LevelUpInfo_DataAsset.h"
 #include "Player/AuraPlayerState.h"
 

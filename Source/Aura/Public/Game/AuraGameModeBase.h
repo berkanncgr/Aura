@@ -21,5 +21,5 @@ public:
 	TObjectPtr<UCharacterClassInfo> CharacterClassInfo;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Ability Info")
-	class UAbilityInfo_DataAsset* AbilityInfo;
+	class UAbilityInfo* AbilityInfo;
 };

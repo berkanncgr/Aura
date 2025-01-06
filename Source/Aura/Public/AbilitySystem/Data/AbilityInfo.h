@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "Engine/DataAsset.h"
-#include "AbilityInfo_DataAsset.generated.h"
+#include "AbilityInfo.generated.h"
 
 
 USTRUCT(BlueprintType)
@@ -42,7 +42,7 @@ struct FAuraAbilityInfo
 };
 
 UCLASS()
-class AURA_API UAbilityInfo_DataAsset : public UDataAsset
+class AURA_API UAbilityInfo : public UDataAsset
 {
 	GENERATED_BODY()
 

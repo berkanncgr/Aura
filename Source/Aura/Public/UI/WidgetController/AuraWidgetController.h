@@ -60,7 +60,7 @@ public:
 protected:
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widget Data")
-	TObjectPtr<class UAbilityInfo_DataAsset> AbilityInfo;
+	TObjectPtr<class UAbilityInfo> AbilityInfo;
 
 	UPROPERTY(BlueprintReadOnly, Category="WidgetController")
 	TObjectPtr<APlayerController> PlayerController;

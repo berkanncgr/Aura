@@ -7,7 +7,7 @@
 #include "Data/CharacterClassInfo.h"
 #include "AuraAbilitySystemLibrary.generated.h"
 
-class UAbilityInfo_DataAsset;
+class UAbilityInfo;
 class UAbilitySystemComponent;
 class UAttributeMenuWidgetController;
 class USpellMenuWidgetController;
@@ -40,7 +40,7 @@ public:
 	static UCharacterClassInfo* GetCharacterClassInfo(const UObject* WorldContextObject);
 
 	UFUNCTION(BlueprintCallable, Category="AuraAbilitySystemLibrary|CharacterClassDefaults")
-	static UAbilityInfo_DataAsset* GetAbilityInfo(const UObject* WorldContextObject);
+	static UAbilityInfo* GetAbilityInfo(const UObject* WorldContextObject);
 
 	UFUNCTION(BlueprintPure, Category = "AuraAbilitySystemLibrary|GameplayEffects")
 	static bool IsBlockedHit(const FGameplayEffectContextHandle& EffectContextHandle);
