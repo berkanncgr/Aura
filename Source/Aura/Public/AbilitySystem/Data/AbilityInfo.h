@@ -25,7 +25,7 @@ struct FAuraAbilityInfo
 	UPROPERTY(BlueprintReadOnly)
 	FGameplayTag StatusTag;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FGameplayTag AbilityType;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
