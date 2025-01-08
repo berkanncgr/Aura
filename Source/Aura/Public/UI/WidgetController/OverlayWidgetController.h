@@ -71,6 +71,10 @@ protected:
 	
 	UFUNCTION()
 	void OnXPChanged(int32 NewXP);
+
+	UFUNCTION()
+	void OnAbilityEquipped(const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag, const FGameplayTag& SlotTag, const FGameplayTag& PrevSlot);
+
 	
 };
 
