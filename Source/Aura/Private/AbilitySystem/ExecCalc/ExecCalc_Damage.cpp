@@ -197,7 +197,7 @@ void UExecCalc_Damage::DetermineDebuff(const FGameplayEffectCustomExecutionParam
 		const FGameplayTag& DebuffType = Pair.Value;
 		const float TypeDamage = Spec.GetSetByCallerMagnitude(DamageType, false, -1.f);
 		// .5 padding for floating point [im]precision
-		if (TypeDamage <= -.5f) return;
+		if (TypeDamage <= -.5f) continue;
 		
 		// Determine if there was a successful debuff
 		const float SourceDebuffChance = Spec.GetSetByCallerMagnitude(GameplayTags.Debuff_Chance, false, -1.f);
@@ -207,21 +207,19 @@ void UExecCalc_Damage::DetermineDebuff(const FGameplayEffectCustomExecutionParam
 		TargetDebuffResistance = FMath::Max<float>(TargetDebuffResistance, 0.f);
 		const float EffectiveDebuffChance = SourceDebuffChance * ( 100 - TargetDebuffResistance ) / 100.f;
 		const bool bDebuff = FMath::RandRange(1, 100) < EffectiveDebuffChance;
+		if (!bDebuff) continue;
+		
+		FGameplayEffectContextHandle ContextHandle = Spec.GetContext();
+		UAuraAbilitySystemLibrary::SetIsSuccessfulDebuff(ContextHandle, bDebuff);
+		UAuraAbilitySystemLibrary::SetDamageType(ContextHandle, DamageType);
 
-		if (bDebuff)
-		{
-			FGameplayEffectContextHandle ContextHandle = Spec.GetContext();
-			UAuraAbilitySystemLibrary::SetIsSuccessfulDebuff(ContextHandle, bDebuff);
-			UAuraAbilitySystemLibrary::SetDamageType(ContextHandle, DamageType);
+		const float DebuffDamage = Spec.GetSetByCallerMagnitude(GameplayTags.Debuff_Damage, false, -1.f);
+		UAuraAbilitySystemLibrary::SetDebuffDamage(ContextHandle, DebuffDamage);
+		
+		const float DebuffDuration = Spec.GetSetByCallerMagnitude(GameplayTags.Debuff_Duration, false, -1.f);
+		UAuraAbilitySystemLibrary::SetDebuffDuration(ContextHandle, DebuffDuration);
 
-			const float DebuffDamage = Spec.GetSetByCallerMagnitude(GameplayTags.Debuff_Damage, false, -1.f);
-			UAuraAbilitySystemLibrary::SetDebuffDamage(ContextHandle, DebuffDamage);
-			
-			const float DebuffDuration = Spec.GetSetByCallerMagnitude(GameplayTags.Debuff_Duration, false, -1.f);
-			UAuraAbilitySystemLibrary::SetDebuffDuration(ContextHandle, DebuffDuration);
-
-			const float DebuffFrequency = Spec.GetSetByCallerMagnitude(GameplayTags.Debuff_Frequency, false, -1.f);
-			UAuraAbilitySystemLibrary::SetDebuffFrequency(ContextHandle, DebuffFrequency); 
-		}
+		const float DebuffFrequency = Spec.GetSetByCallerMagnitude(GameplayTags.Debuff_Frequency, false, -1.f);
+		UAuraAbilitySystemLibrary::SetDebuffFrequency(ContextHandle, DebuffFrequency); 
 	}
 }
