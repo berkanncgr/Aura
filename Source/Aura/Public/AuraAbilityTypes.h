@@ -25,6 +25,8 @@ public:
 	void SetDebuffDuration(float InDuration) { DebuffDuration = InDuration; }
 	void SetDebuffFrequency(float InFrequency) { DebuffFrequency = InFrequency; }
 	void SetDamageType(TSharedPtr<FGameplayTag> InDamageType) { DamageType = InDamageType; }
+	FVector GetDeathImpulse() const { return DeathImpulse; };
+	void SetDeathImpulse(const FVector& Vector) { DeathImpulse = Vector; };
 	
 	/** Returns the actual struct used for serialization, subclasses must override this! */
 	virtual UScriptStruct* GetScriptStruct() const
@@ -47,7 +49,8 @@ public:
 
 	/** Custom serialization, subclasses must override this */
 	virtual bool NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bOutSuccess);
-	
+
+
 protected:
 
 	UPROPERTY()
@@ -67,7 +70,11 @@ protected:
 
 	UPROPERTY()
 	float DebuffFrequency = 0.f;
+	
 	TSharedPtr<FGameplayTag> DamageType;
+
+	UPROPERTY()
+	FVector DeathImpulse = FVector::ZeroVector;
 	
 };
 
@@ -120,4 +127,10 @@ struct FDamageEffectParams
 
 	UPROPERTY()
 	float DebuffFrequency = 0.f;
+
+	UPROPERTY()
+	float DeathImpulseMagnitude = 0.f;
+
+	UPROPERTY()
+	FVector DeathImpulse = FVector::ZeroVector;
 };

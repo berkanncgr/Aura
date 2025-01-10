@@ -38,6 +38,8 @@ public:
 	virtual void IncremenetMinionCount_Implementation(int32 Amount) override;
 	/** end Combat Interface */
 
+	virtual FOnASCRegistered GetOnASCRegisteredDelegate() override;
+
 	UFUNCTION(NetMulticast, Reliable)
 	virtual void MulticastHandleDeath();
 
@@ -45,6 +47,7 @@ public:
 	TArray<FTaggedMontage> AttackMontages;
 	
 protected:
+	
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
@@ -63,6 +66,8 @@ protected:
 	FName TailSocketName;
 
 	bool bDead = false;
+
+	FOnASCRegistered OnAscRegistered;
 
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
@@ -83,6 +88,9 @@ protected:
 	
 	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClass, float Level) const;
 	virtual void InitializeDefaultAttributes() const;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<class UDebuffNiagaraComponent> BurnDebuffComponent;
 
 	void AddCharacterAbilities();
 
