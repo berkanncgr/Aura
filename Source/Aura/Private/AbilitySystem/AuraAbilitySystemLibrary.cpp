@@ -3,9 +3,12 @@
 
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
 #include "AuraAbilityTypes.h"
+#include "AuraGameplayTags.h"
 #include "Game/AuraGameModeBase.h"
 #include "Interaction/CombatInterface.h"
+#include "Iris/Serialization/ObjectNetSerializer.h"
 #include "Kismet/GameplayStatics.h"
 #include "UI/WidgetController/AuraWidgetController.h"
 #include "Player/AuraPlayerState.h"
@@ -189,3 +192,53 @@ int32 UAuraAbilitySystemLibrary::GetXPRewardForClassAndLevel(const UObject* Worl
 	const float XPReward = Info.XPReward.GetValueAtLevel(CharacterLevel);
 	return static_cast<int32>(XPReward);
 }
+
+FGameplayEffectContextHandle UAuraAbilitySystemLibrary::ApplyDamageEffect(const FDamageEffectParams& EffectParams)
+{
+	if (!EffectParams.TargetAbilitySystemComponent) return FGameplayEffectContextHandle();
+	const FAuraGameplayTags GameplayTags = FAuraGameplayTags::Get();
+	
+	FGameplayEffectContextHandle ContextHandle = EffectParams.SourceAbilitySystemComponent->MakeEffectContext();
+	ContextHandle.AddSourceObject(EffectParams.SourceAbilitySystemComponent->GetAvatarActor());
+	const FGameplayEffectSpecHandle SpecHandle =  EffectParams.SourceAbilitySystemComponent->MakeOutgoingSpec(EffectParams.DamageGameplayEffectClass,EffectParams.AbilityLevel,ContextHandle);
+
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle,EffectParams.DamageType,EffectParams.BaseDamage);
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle,GameplayTags.Debuff_Chance,EffectParams.DebuffChance);
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle,GameplayTags.Debuff_Damage,EffectParams.DebuffDamage);
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle,GameplayTags.Debuff_Frequency,EffectParams.DebuffFrequency);
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle,GameplayTags.Debuff_Duration,EffectParams.DebuffDuration);
+	
+	FActiveGameplayEffectHandle ActiveGameplayEffectHandle = EffectParams.TargetAbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+
+	return ContextHandle;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

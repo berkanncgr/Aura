@@ -57,3 +57,44 @@ struct TStructOpsTypeTraits<FAuraGameplayEffectContext> : public TStructOpsTypeT
 		WithCopy = true
 	};
 };
+
+USTRUCT(BlueprintType)
+struct FDamageEffectParams
+{
+	GENERATED_BODY()
+
+	FDamageEffectParams(){}
+	
+	UPROPERTY()
+	UObject* WorldContextObject = nullptr;
+
+	UPROPERTY()
+	TSubclassOf<class UGameplayEffect> DamageGameplayEffectClass = nullptr;
+
+	UPROPERTY()
+	class UAbilitySystemComponent* SourceAbilitySystemComponent;
+
+	UPROPERTY()
+	UAbilitySystemComponent* TargetAbilitySystemComponent;
+
+	UPROPERTY()
+	float BaseDamage = 0.f;
+
+	UPROPERTY()
+	float AbilityLevel = 1.f;
+
+	UPROPERTY()
+	FGameplayTag DamageType = FGameplayTag();
+
+	UPROPERTY()
+	float DebuffChance = 0.f;
+
+	UPROPERTY()
+	float DebuffDamage = 0.f;
+
+	UPROPERTY()
+	float DebuffDuration = 0.f;
+
+	UPROPERTY()
+	float DebuffFrequency = 0.f;
+};
