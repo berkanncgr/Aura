@@ -10,7 +10,6 @@
 UDebuffNiagaraComponent::UDebuffNiagaraComponent()
 {
 	bAutoActivate = false;
-
 	
 	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> NiagaraSystemAsset(TEXT("/Game/Assets/Effects/Fire/NS_Fire.NS_Fire"));
 
@@ -39,5 +38,7 @@ void UDebuffNiagaraComponent::BeginPlay()
 
 void UDebuffNiagaraComponent::DebuffTagChanged(FGameplayTag GameplayTag, int NewCount)
 {
+	const bool bOwnerAlive = IsValid(GetOwner()) &&  GetOwner()->Implements<UCombatInterface>() && !ICombatInterface::Execute_IsDead(GetOwner());
+	if (!bOwnerAlive) return;
 	NewCount >0 ? Activate()  : Deactivate();
 }
