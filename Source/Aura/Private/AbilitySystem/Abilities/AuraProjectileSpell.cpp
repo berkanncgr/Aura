@@ -7,8 +7,6 @@
 #include "AbilitySystemComponent.h"
 #include "Actor/AuraProjectile.h"
 #include "Interaction/CombatInterface.h"
-#include "Aura/Public/AuraGameplayTags.h"
-
 
 
 void UAuraProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocation, const FGameplayTag& SocketTag, bool bOverridePitch, float PitchOverride)

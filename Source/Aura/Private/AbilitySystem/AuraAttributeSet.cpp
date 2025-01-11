@@ -222,8 +222,9 @@ void UAuraAttributeSet::Debuff(const FEffectProperties& Props)
 	FInheritedTagContainer TagContainer = FInheritedTagContainer();
 	UTargetTagsGameplayEffectComponent& Component = Effect->FindOrAddComponent<UTargetTagsGameplayEffectComponent>();
 	TagContainer.Added.AddTag(GameplayTags.DamageTypesToDebuffs[DamageType]);
-	//TagContainer.CombinedTags.AddTag(GameplayTags.DamageTypesToDebuffs[DamageType]);
+	TagContainer.CombinedTags.AddTag(GameplayTags.DamageTypesToDebuffs[DamageType]);
 	Component.SetAndApplyTargetTagChanges(TagContainer);
+	TagContainer.UpdateInheritedTagProperties(&TagContainer);
 	
 	const int32 Index = Effect->Modifiers.Num();
 	Effect->Modifiers.Add(FGameplayModifierInfo());
