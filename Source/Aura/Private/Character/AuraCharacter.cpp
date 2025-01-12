@@ -63,6 +63,11 @@ int32 AAuraCharacter::GetPlayerLevel_Implementation()
 	return AuraPlayerState->GetPlayerLevel();
 }
 
+void AAuraCharacter::SetInShockLoop_Implementation(bool InShockLoop)
+{
+	if (HasAuthority()) Multicast_SetInShockLoop(InShockLoop);
+}
+
 void AAuraCharacter::AddToXP_Implementation(int32 InXP)
 {
 	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();

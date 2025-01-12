@@ -24,7 +24,7 @@ public:
 	/** Combat Interface */
 	virtual int32 GetPlayerLevel_Implementation() override;
 	FORCEINLINE virtual bool GetInShockLoop_Implementation() override { return bInShockLoop; }
-	FORCEINLINE virtual void SetInShockLoop_Implementation(bool InShockLoop) override { bInShockLoop = InShockLoop; };
+	FORCEINLINE virtual void SetInShockLoop_Implementation(bool InShockLoop) override;
 	/** end Combat Interface */
 
 	/** Players Interface */
@@ -59,5 +59,10 @@ private:
 	
 	UFUNCTION(NetMulticast, Reliable)
 	void MulticastLevelUpParticles() const;
+
+	UFUNCTION(NetMulticast, Reliable)
+	void Multicast_SetInShockLoop(bool ShockLoop);
+	FORCEINLINE void Multicast_SetInShockLoop_Implementation(bool ShockLoop) { bInShockLoop = ShockLoop;}
+	
 	
 };
