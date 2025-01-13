@@ -20,7 +20,10 @@ public:
 	void StoreMouseDataInfo(const FHitResult& HitResult);
 	
 	UFUNCTION(BlueprintCallable)
-	void StoreOwnerPlayerController();
+	void StoreOwnershipVariables();
+	
+	UFUNCTION(BlueprintCallable)
+	void TraceFirstTarget(const FVector& BeamTargetLocation);
 	
 protected:
 
@@ -32,5 +35,8 @@ protected:
 	
 	UPROPERTY(BlueprintReadWrite, Category = "Beam")
 	APlayerController* OwnerPlayerController;
+	
+	UPROPERTY(BlueprintReadWrite, Category = "Beam")
+	class ACharacter* OwnerCharacter;
 	
 };
