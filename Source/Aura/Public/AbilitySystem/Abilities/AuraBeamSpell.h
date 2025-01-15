@@ -20,10 +20,13 @@ public:
 	void StoreMouseDataInfo(const FHitResult& HitResult);
 	
 	UFUNCTION(BlueprintCallable)
-	void StoreOwnershipVariables();
+	void StoreOwnerVariables();
 	
 	UFUNCTION(BlueprintCallable)
 	void TraceFirstTarget(const FVector& BeamTargetLocation);
+
+	UFUNCTION(BlueprintCallable)
+	void StoreAdditionalTargets(TArray<AActor*>& OutAdditionalTargets);
 	
 protected:
 
