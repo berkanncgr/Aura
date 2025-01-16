@@ -37,9 +37,11 @@ public:
 	virtual int32 GetMinionCount_Implementation() override;
 	virtual void IncremenetMinionCount_Implementation(int32 Amount) override;
 	virtual USkeletalMeshComponent* GetWeapon_Implementation() override;
+	virtual FOnDeathSignature& GetOnDeathDelegate() override;
 	/** end Combat Interface */
 
 	virtual FOnASCRegistered GetOnASCRegisteredDelegate() override;
+	FOnDeathSignature OnDeathDelegate;
 
 	UFUNCTION(NetMulticast, Reliable)
 	virtual void MulticastHandleDeath(const FVector& DeathImpulse);

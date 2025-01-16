@@ -143,6 +143,11 @@ USkeletalMeshComponent* AAuraCharacterBase::GetWeapon_Implementation()
 	return Weapon;
 }
 
+FOnDeathSignature& AAuraCharacterBase::GetOnDeathDelegate()
+{
+	return OnDeathDelegate;
+}
+
 void AAuraCharacterBase::InitAbilityActorInfo()
 {
 }

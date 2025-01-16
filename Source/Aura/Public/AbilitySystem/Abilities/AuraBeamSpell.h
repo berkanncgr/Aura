@@ -29,6 +29,12 @@ public:
 	void StoreAdditionalTargets(TArray<AActor*>& OutAdditionalTargets);
 	
 protected:
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	void PrimaryTargetDied(AActor* DeadActor);
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	void AdditionalTargetDied(AActor* DeadActor);
 
 	UPROPERTY(BlueprintReadWrite, Category = "Beam")
 	FVector MouseHitLocation;
@@ -41,5 +47,8 @@ protected:
 	
 	UPROPERTY(BlueprintReadWrite, Category = "Beam")
 	class ACharacter* OwnerCharacter;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Beam")
+	int32 MaxNumShockTargets = 5;
 	
 };

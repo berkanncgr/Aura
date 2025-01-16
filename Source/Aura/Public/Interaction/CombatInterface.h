@@ -9,6 +9,7 @@
 #include "CombatInterface.generated.h"
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnASCRegistered, class UAbilitySystemComponent*)
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDeathSignature, AActor*, DeadActor);
 
 class UNiagaraSystem;
 class UAnimMontage;
@@ -97,4 +98,7 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	class USkeletalMeshComponent* GetWeapon();
+
+	virtual FOnDeathSignature& GetOnDeathDelegate() = 0;
+	
 };

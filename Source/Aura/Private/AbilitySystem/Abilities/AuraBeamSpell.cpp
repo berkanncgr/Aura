@@ -45,6 +45,10 @@ void UAuraBeamSpell::TraceFirstTarget(const FVector& BeamTargetLocation)
 		MouseHitLocation = HitResult.ImpactPoint;
 		MouseHitActor = HitResult.GetActor();
 	}
+	
+	ICombatInterface* CombatInterface = Cast<ICombatInterface>(MouseHitActor);
+	if (!CombatInterface) return;
+	CombatInterface->GetOnDeathDelegate().AddUniqueDynamic(this, &UAuraBeamSpell::PrimaryTargetDied);
 }
 
 void UAuraBeamSpell::StoreAdditionalTargets(TArray<AActor*>& OutAdditionalTargets)
@@ -56,8 +60,15 @@ void UAuraBeamSpell::StoreAdditionalTargets(TArray<AActor*>& OutAdditionalTarget
 	TArray<AActor*> OverlappingActors;
 	UAuraAbilitySystemLibrary::GetLivePlayersWithinRadius(GetAvatarActorFromActorInfo(),OverlappingActors,ActorsToIgnore,850.f,MouseHitActor->GetActorLocation());
 	
-	//int32 NumAdditionalTargets = FMath::Min(GetAbilityLevel() - 1, MaxNumShockTargets);
-	int32 NumAdditionTargets = 5;
+	int32 NumAdditionTargets = FMath::Min(GetAbilityLevel() - 1, MaxNumShockTargets);
+	
 	
 	UAuraAbilitySystemLibrary::GetClosestTargets(NumAdditionTargets, OverlappingActors, OutAdditionalTargets, MouseHitActor->GetActorLocation());
+
+	for (AActor* Target : OutAdditionalTargets)
+	{
+		ICombatInterface* CombatInterface = Cast<ICombatInterface>(Target);
+		if (!CombatInterface) continue;
+		CombatInterface->GetOnDeathDelegate().AddUniqueDynamic(this, &UAuraBeamSpell::AdditionalTargetDied);
+	}
 }
