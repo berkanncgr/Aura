@@ -8,6 +8,7 @@
 #include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
 #include "Aura/Aura.h"
 #include "Components/CapsuleComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 AAuraCharacterBase::AAuraCharacterBase()
@@ -29,6 +30,10 @@ AAuraCharacterBase::AAuraCharacterBase()
 	BurnDebuffComponent = CreateDefaultSubobject<UDebuffNiagaraComponent>("BurnDebuffComponent");
 	BurnDebuffComponent->SetupAttachment(GetRootComponent());
 	BurnDebuffComponent->DebuffTag = GameplayTags.Debuff_Burn;
+
+	StunDebuffComponent = CreateDefaultSubobject<UDebuffNiagaraComponent>("StunDebuffComponent");
+	StunDebuffComponent->SetupAttachment(GetRootComponent());
+	StunDebuffComponent->DebuffTag = GameplayTags.Debuff_Stun;
 }
 
 UAbilitySystemComponent* AAuraCharacterBase::GetAbilitySystemComponent() const
@@ -66,6 +71,7 @@ void AAuraCharacterBase::MulticastHandleDeath_Implementation(const FVector& Deat
 	Dissolve();
 	bDead = true;
 	BurnDebuffComponent->Deactivate();
+	StunDebuffComponent->Deactivate();
 }
 
 void AAuraCharacterBase::BeginPlay()
@@ -148,6 +154,17 @@ FOnDeathSignature& AAuraCharacterBase::GetOnDeathDelegate()
 	return OnDeathDelegate;
 }
 
+void AAuraCharacterBase::SetIsBeingShocked_Implementation(bool bInShock)
+{
+	bIsBeingShocked = bInShock;
+	Multicast_SetIsBeingShot(bInShock);
+}
+
+bool AAuraCharacterBase::IsBeingShocked_Implementation() const
+{
+	return bIsBeingShocked;
+}
+
 void AAuraCharacterBase::InitAbilityActorInfo()
 {
 }
@@ -194,7 +211,52 @@ void AAuraCharacterBase::Dissolve()
 	}
 }
 
-FOnASCRegistered AAuraCharacterBase::GetOnASCRegisteredDelegate()
+
+void AAuraCharacterBase::Multicast_SetIsBeingShot_Implementation(bool IsBeingShocked)
+{
+	bIsBeingShocked = IsBeingShocked;
+}
+
+void AAuraCharacterBase::StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	bIsStunned = NewCount > 0;
+	GetCharacterMovement()->MaxWalkSpeed = bIsStunned ? 0.f : BaseWalkSpeed;
+	if (HasAuthority()) Multicast_SetIsStunned(bIsStunned);
+}
+
+FOnASCRegistered& AAuraCharacterBase::GetOnASCRegisteredDelegate()
 {
 	return OnAscRegistered;
+}
+
+void AAuraCharacterBase::Multicast_SetIsStunned_Implementation(bool InIsStunned)
+{
+	bIsStunned = InIsStunned;
+
+	UAuraAbilitySystemComponent* AuraASC = Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent);
+	if (!AuraASC) return;
+
+	const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
+	FGameplayTagContainer BlockedTags;
+	BlockedTags.AddTag(GameplayTags.Player_Block_CursorTrace);
+	BlockedTags.AddTag(GameplayTags.Player_Block_InputHeld);
+	BlockedTags.AddTag(GameplayTags.Player_Block_InputPressed);
+	BlockedTags.AddTag(GameplayTags.Player_Block_InputReleased);
+	if (bIsStunned)
+	{
+		AuraASC->AddLooseGameplayTags(BlockedTags);
+		StunDebuffComponent->Activate();
+	}
+	else
+	{
+		AuraASC->RemoveLooseGameplayTags(BlockedTags);
+		StunDebuffComponent->Deactivate();
+	}
+	
+}
+
+void AAuraCharacterBase::Multicast_SetIsBurned_Implementation(bool InIsBurned)
+{
+	bIsBurned = InIsBurned;
+	bIsBurned ? BurnDebuffComponent->Activate() : BurnDebuffComponent->Deactivate();
 }

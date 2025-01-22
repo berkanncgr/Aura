@@ -38,9 +38,12 @@ public:
 	virtual void IncremenetMinionCount_Implementation(int32 Amount) override;
 	virtual USkeletalMeshComponent* GetWeapon_Implementation() override;
 	virtual FOnDeathSignature& GetOnDeathDelegate() override;
+	virtual void SetIsBeingShocked_Implementation(bool bInShock) override;
+	virtual bool IsBeingShocked_Implementation() const override;
 	/** end Combat Interface */
 
-	virtual FOnASCRegistered GetOnASCRegisteredDelegate() override;
+	virtual FOnASCRegistered& GetOnASCRegisteredDelegate() override;
+
 	FOnDeathSignature OnDeathDelegate;
 
 	UFUNCTION(NetMulticast, Reliable)
@@ -69,6 +72,9 @@ protected:
 	FName TailSocketName;
 
 	bool bDead = false;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
+	float BaseWalkSpeed = 600.f;
 
 	FOnASCRegistered OnAscRegistered;
 
@@ -94,6 +100,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<class UDebuffNiagaraComponent> BurnDebuffComponent;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UDebuffNiagaraComponent> StunDebuffComponent;
 
 	void AddCharacterAbilities();
 
@@ -128,6 +137,26 @@ protected:
 
 	FORCEINLINE virtual ECharacterClass GetCharacterClass_Implementation() override
 	{ return CharacterClass;}
+
+	UPROPERTY( BlueprintReadOnly)
+	bool bIsStunned = false;
+	
+	UPROPERTY(BlueprintReadOnly)
+	bool bIsBurned = false;
+
+	UPROPERTY(BlueprintReadOnly)
+	bool bIsBeingShocked = false;
+
+	UFUNCTION(NetMulticast,Reliable)
+	void Multicast_SetIsStunned(bool InIsStunned);
+
+	UFUNCTION(NetMulticast,Reliable)
+	void Multicast_SetIsBurned(bool InIsBurned);
+
+	UFUNCTION(NetMulticast,Reliable)
+	void Multicast_SetIsBeingShot(bool IsBeingShocked);
+
+	virtual void StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
 	
 private:
 
