@@ -42,10 +42,10 @@ public:
 	void ForEachAbility(const FForEachAbility& Delegate);
 	
 	const FGameplayTag GetAbilityTagFromSpec(const FGameplayAbilitySpec& AbilitySpec) const;
-	const FGameplayTag GetInputTagFromSpec(const FGameplayAbilitySpec& AbilitySpec) const;
+	static FGameplayTag GetInputTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 	static FGameplayTag GetStatusTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 	FGameplayTag GetStatusFromAbilityTag(const FGameplayTag& AbilityTag);
-	FGameplayTag GetInputTagFromAbilityTag(const FGameplayTag& AbilityTag);
+	FGameplayTag GetSlotTagFromAbilityTag(const FGameplayTag& AbilityTag);
 	
 
 	void UpdateAbilityStatuses(int32 Level);
@@ -68,6 +68,18 @@ public:
 	UFUNCTION(Client, Reliable)
 	void Client_EquipAbility(const FGameplayTag& AbilityTag, const FGameplayTag& Status, const FGameplayTag& Slot, const FGameplayTag& PreviousSlot);
 	
+	bool SlotIsEmpty(const FGameplayTag& Slot);
+	
+	static bool AbilityHasSlot(const FGameplayAbilitySpec& Spec, const FGameplayTag& Slot);
+
+	static bool AbilityHasAnySlot(const FGameplayAbilitySpec& Spec);
+
+	FGameplayAbilitySpec* GetSpecWithSlot(const FGameplayTag& Slot);
+
+	bool IsPassiveAbility(const FGameplayAbilitySpec& Spec) const;
+
+	static void AssignSlotToAbility(FGameplayAbilitySpec& Spec, const FGameplayTag& Slot);
+	
 protected:
 
 	UFUNCTION(Client, Reliable)
@@ -78,7 +90,7 @@ protected:
 
 	virtual void OnRep_ActivateAbilities() override;
 
-	void ClearSlot(FGameplayAbilitySpec* AbilitySpec);
+	static void ClearSlot(FGameplayAbilitySpec* AbilitySpec);
 
 	// Remove input tag from ability:
 	void ClearAbilitiesOfSlot(const FGameplayTag& Slot);
