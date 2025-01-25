@@ -371,6 +371,11 @@ FString("FireBolt Cooldown Tag")
 			FString("Halo Of Protection")
 			);
 
+	GameplayTags.Abilities_Arcane_ArcaneShards = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Arcane.ArcaneShards"),
+		FString("Arcane Shards Ability Tag")
+		);
+
 	/*
  * Map of Damage Types to Resistances
  */
