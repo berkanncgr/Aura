@@ -279,3 +279,15 @@ void AAuraCharacterBase::Multicast_SetIsBurned_Implementation(bool InIsBurned)
 	bIsBurned = InIsBurned;
 	bIsBurned ? BurnDebuffComponent->Activate() : BurnDebuffComponent->Deactivate();
 }
+
+float AAuraCharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	const float DamageTaken = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	OnDamageDelegate.Broadcast(DamageTaken);
+	return DamageTaken;
+}
+
+FOnDamageSignature& AAuraCharacterBase::GetOnDamageSignature()
+{
+	return OnDamageDelegate;
+}
