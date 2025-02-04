@@ -22,4 +22,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Ability Info")
 	class UAbilityInfo* AbilityInfo;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class USaveGame> LoadScreenSaveGameClass;
+	
+	void SaveSlotData(class UMVVM_LoadSlot* LoadSlot, int32 SlotIndex); 
 };
