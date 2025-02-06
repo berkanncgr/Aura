@@ -26,5 +26,6 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class USaveGame> LoadScreenSaveGameClass;
 	
-	void SaveSlotData(class UMVVM_LoadSlot* LoadSlot, int32 SlotIndex); 
+	void SaveSlotData(class UMVVM_LoadSlot* LoadSlot, int32 SlotIndex);
+	class ULoadScreenSaveGame* GetSaveSlotData(const FString& SlotName, int32 SlotIndex) const;
 };
